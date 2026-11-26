@@ -41,8 +41,11 @@ Golden's own `app.css` does three things:
 - `tb-charts.js` on Cash flow: a thin Svelte action calls `TBChart.columns` with dollar values and `--s1` / `--s2` series colours.
 - Bulk select on lists: a checkbox column, shift-click range, select-all and a bulk bar that sits above the table while anything is selected. Built from the existing `tb-seg` / field styles, so no new classes.
 
+- `tb-charts.js` also draws the retirement fan chart (`TBChart.line` with a 10th to 90th percentile band) and the final-balance histogram (`TBChart.columns`).
+- Board view on Transactions: a `tb-seg` List / By category switch, then one lane per category (a bordered surface with a header, line count and total) holding compact tiles. Local to the screen, no framework classes yet.
+
 ## Not yet adopted
 
-- `tb-charts.js` for the fan chart and the Sankey (still Svelte components).
-- A board view for lists, and the bulk bar on lists other than Transactions.
+- The Sankey: the kit has no Sankey, so it stays a Svelte component styled with role tokens.
+- Board lanes as a shared `tb-board` extension, if a second screen needs it.
 - Per-screen conversion of the remaining cards to `.tb-section`.
