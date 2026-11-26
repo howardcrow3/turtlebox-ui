@@ -13,6 +13,7 @@ Status: draft v0.2, first uploaded for review. The design is not final until How
 | `css/base.css` | Inter-only base type, focus ring, reduced motion |
 | `css/charts.css` | Chart chrome, tooltip, tables, stat tiles, time bar and dashboard cards |
 | `js/tb-charts.js` | Dependency-free chart kit: columns, lines, bands, bars, sparklines, time window overview, table view |
+| `css/extensions.css` | Segmented control, field, notice, badge, empty state, progress, data table, section (see `docs/EXTENSIONS.md`) |
 | `css/components.css` | Framework-neutral styles for buttons, toggle, select, input, chip, nav, rows, modal, chat composer, result list, approval card, data table, board and chat dock |
 | `docs/CHARTS.md` | Chart types, the time model and the chart rules |
 | `docs/DESIGN.md` | Principles, layout patterns, density, lists, chat and forms, themes, references, adoption plan |
@@ -25,6 +26,7 @@ Status: draft v0.2, first uploaded for review. The design is not final until How
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/extensions.css">  <!-- optional, v0.3 -->
 <link rel="stylesheet" href="css/charts.css">   <!-- only for apps with charts -->
 <script src="js/tb-charts.js"></script>        <!-- only for apps with charts -->
 ```

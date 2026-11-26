@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.0 (draft)
+- `css/extensions.css` and `docs/EXTENSIONS.md`: segmented control, field, notice, badge, empty state, progress, data table, section. Added for Golden, which now vendors the framework.
+
 ## 0.2.0 (draft)
 - Chart kit (`js/tb-charts.js`), chart tokens and `css/charts.css`, `docs/CHARTS.md`
 - Compact density: 26px buttons, 30px table rows

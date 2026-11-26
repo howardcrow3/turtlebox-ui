@@ -1,0 +1,49 @@
+/* Turtlebox UI extensions, added for Golden (v0.3). Requires tokens.css, base.css and components.css.
+   Role tokens only, no hex. See docs/EXTENSIONS.md. */
+
+/* Segmented control: one choice from a few, such as week, month, quarter, year. Use buttons with aria-pressed. */
+.tb-seg{display:inline-flex;border:1px solid var(--control);border-radius:var(--r-sm);overflow:hidden;background:var(--surface)}
+.tb-seg>button{height:24px;border:0;border-radius:0;background:transparent;color:var(--body);font:500 12.5px var(--sans);padding:0 12px;cursor:pointer}
+.tb-seg>button+button{border-left:1px solid var(--line)}
+.tb-seg>button:hover{background:var(--hover);color:var(--ink)}
+.tb-seg>button[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
+
+/* Field: label above a control, with optional help or error text. */
+.tb-field{display:grid;gap:4px;min-width:0}
+.tb-field>label,.tb-field>.lbl{font-size:12px;color:var(--muted)}
+.tb-field .help{font-size:12px;line-height:1.4;color:var(--muted)}
+.tb-field.invalid .input,.tb-field.invalid .select{border-color:var(--danger)}
+.tb-field.invalid .help{color:var(--danger)}
+.tb-fields{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px 16px;align-items:end}
+
+/* Notice: a message inside a screen. Neutral by default; ok, warn (gold wash) and danger variants. Never colour alone: pair with words. */
+.tb-notice{border:1px solid var(--line);border-left-width:3px;border-radius:var(--r-sm);background:var(--surface);padding:8px 12px;font-size:12.5px;line-height:1.5;color:var(--ink)}
+.tb-notice.ok{border-left-color:var(--ok)}
+.tb-notice.warn{border-color:var(--accent);background:var(--accent-soft)}
+.tb-notice.danger{border-left-color:var(--danger);color:var(--danger)}
+
+/* Badge: a short status label. */
+.tb-badge{display:inline-flex;align-items:center;height:18px;padding:0 7px;border-radius:var(--r-pill);font:500 11px/1 var(--sans);border:1px solid var(--line);color:var(--body);background:transparent;white-space:nowrap}
+.tb-badge.accent{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.tb-badge.ok{color:var(--ok);border-color:var(--ok)}
+.tb-badge.danger{color:var(--danger);border-color:var(--danger)}
+
+/* Empty state: what is missing and the one action that fixes it. */
+.tb-empty{display:grid;gap:8px;justify-items:start;padding:20px;border:1px dashed var(--line);border-radius:var(--r-md);color:var(--muted);font-size:12.5px}
+.tb-empty b{color:var(--ink);font-weight:600;font-size:13px}
+
+/* Progress: determinate bar. Set the value with --v (0 to 1) or the width of the fill. */
+.tb-progress{height:6px;border-radius:var(--r-pill);background:var(--selected);overflow:hidden}
+.tb-progress>i{display:block;height:100%;width:calc(var(--v,0)*100%);background:var(--accent);transition:width .15s ease-out}
+
+/* Data table for screens: dense, numbers right-aligned and tabular, sticky header optional. */
+.tb-data{width:100%;border-collapse:collapse;font-size:12.5px}
+.tb-data th{font-size:11px;font-weight:500;color:var(--muted);text-align:left;padding:0 10px;height:26px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tb-data td{padding:0 10px;height:30px;border-bottom:1px solid var(--line);color:var(--body)}
+.tb-data tr:hover td{background:var(--hover)}
+.tb-data .num,.tb-data th.num{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
+.tb-data tfoot td{font-weight:600;color:var(--ink);border-top:1px solid var(--control)}
+
+/* Section: a titled group inside a work surface, with the framework group label. */
+.tb-section{display:grid;gap:10px;margin:0 0 20px}
+.tb-section>h2{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
