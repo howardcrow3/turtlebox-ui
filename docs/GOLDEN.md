@@ -35,9 +35,14 @@ Golden's own `app.css` does three things:
 - Numbers are tabular and right-aligned in tables.
 - Hidden amounts (the screen-sharing mask) is an app feature, not a framework one.
 
+## Also adopted
+
+- Chat dock: a 320px `<aside>` beside the work screens, reusing the Ask thread and composer classes (`tb-thread`, `tb-msg-u`, `tb-msg-a`, `tb-composer`, `tb-sug`). It can be hidden from the sidebar.
+- `tb-charts.js` on Cash flow: a thin Svelte action calls `TBChart.columns` with dollar values and `--s1` / `--s2` series colours.
+- Bulk select on lists: a checkbox column, shift-click range, select-all and a bulk bar that sits above the table while anything is selected. Built from the existing `tb-seg` / field styles, so no new classes.
+
 ## Not yet adopted
 
-- Three-pane layout with the chat dock beside work screens.
-- `tb-charts.js` for Golden's own charts (the fan chart, the Sankey and the cash-flow bars are Svelte components).
-- The board view and bulk bar for lists.
+- `tb-charts.js` for the fan chart and the Sankey (still Svelte components).
+- A board view for lists, and the bulk bar on lists other than Transactions.
 - Per-screen conversion of the remaining cards to `.tb-section`.
