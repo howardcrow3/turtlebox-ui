@@ -1,0 +1,21 @@
+/* Generated from components.css by scripts/build-shell.py. Do not edit by hand. App shell only. */
+.side{background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:12px 8px 8px;gap:2px;min-height:0}
+.side .wm{display:flex;align-items:center;gap:8px;padding:4px 8px 12px;font-weight:600;color:var(--ink);font-size:14px;letter-spacing:-.02em}
+.side .wm i{width:18px;height:18px;border-radius:6px;background:var(--ink);color:var(--on-ink);display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:600}
+.nav{display:flex;align-items:center;gap:10px;padding:0 8px;height:28px;border-radius:var(--r-sm);color:var(--body);background:transparent;border:0;font:450 13px var(--sans);cursor:pointer;text-align:left;width:100%}
+.nav:hover{background:var(--hover);color:var(--ink)}
+.nav[aria-current="true"]{background:var(--selected);color:var(--ink)}
+.nav .badge{margin-left:auto;font-size:11px;font-weight:600;background:var(--accent);color:var(--on-accent);border-radius:var(--r-pill);padding:1px 6px}
+.side .lbl{font-size:11px;color:var(--muted);padding:14px 8px 4px;font-weight:500}
+.side .grow{flex:1;min-height:0;overflow:hidden}
+.recent{color:var(--body);font-size:12.5px;padding:0 8px;height:28px;display:flex;align-items:center;border-radius:var(--r-sm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.recent:hover{background:var(--hover)}
+.acct{display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--r-md);border:0;background:transparent;cursor:pointer;width:100%;text-align:left;font:inherit;color:var(--ink)}
+.acct:hover,.acct[aria-expanded="true"]{background:var(--hover)}
+.av{width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-weight:600;font-size:12px;flex:none}
+.acct .n{font-weight:500;font-size:13px;line-height:1.2}
+.acct .s{font-size:11px;color:var(--muted);line-height:1.2}
+.pop{position:absolute;left:8px;bottom:60px;width:216px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow-pop);padding:6px;z-index:5}
+.pop .who{padding:6px 8px 8px;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line);margin-bottom:4px}
+.pop .nav{height:26px}
+.pop hr{border:0;border-top:1px solid var(--line);margin:4px 0}

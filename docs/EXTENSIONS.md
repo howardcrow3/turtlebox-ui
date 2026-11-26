@@ -21,3 +21,7 @@ Golden also uses `css/charts.css` and `js/tb-charts.js` unchanged.
 - A choice of 2 to 5 short options is a segmented control, not a row of separate buttons.
 - Screens group content in sections with a group label, not in a stack of cards. Use a card (`.cardx`) only for a self-contained tool or a headline number.
 - Estimates and approximations get a `.tb-badge` or a `.tb-notice.warn` with words, never colour alone.
+
+## shell.css: shell only
+
+`components.css` uses short global names (`.row`, `.bar`, `.chip`, `.col`, `.list`, `.toggle`) that collide with an existing app's own screens. `css/shell.css` is generated from it by `scripts/build-shell.py` and keeps only the app shell (`.side`, `.wm`, `.nav`, `.acct`, `.av`, `.pop`, `.recent`). Golden loads tokens, base, shell, extensions and charts, and styles bare `button`, `input` and `select` elements itself to match. New apps should use `components.css` and the prefixed names planned for 1.0.
