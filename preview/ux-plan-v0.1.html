@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Turtlebox UX Framework</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600&display=swap">
+<style>
+/* Layout: one long review page. Each section = short brief, then live mockup frames. Mockups use the same tokens they propose. */
+:root{
+  --paper:#f7f3ea; --sidebar:#ede7da; --surface:#fffdf8; --hover:#e8e1d2; --selected:#e2d9c6;
+  --line:#d2c9b6; --ink:#1c1c1c; --body:#4a443c; --muted:#7a7266; --control:#8a8278;
+  --accent:#d4a853; --accent-soft:#f1e3bd; --on-accent:#1c1c1c; --on-ink:#f7f3ea;
+  --danger:#8f3b2a; --ok:#3f6b4a; --scrim:rgba(28,24,18,.42);
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r-sm:6px; --r-md:10px; --r-lg:14px; --r-pill:999px;
+  --shadow-pop:0 8px 28px rgba(28,24,18,.16),0 1px 3px rgba(28,24,18,.1);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#1e1d1b; --sidebar:#171614; --surface:#262421; --hover:#2d2b27; --selected:#37342e;
+  --line:#34312c; --ink:#f3eee4; --body:#c9c1b2; --muted:#968e80; --control:#8a8278;
+  --accent:#d4a853; --accent-soft:#3d3320; --on-accent:#1c1c1c; --on-ink:#1c1c1c;
+  --danger:#e58e80; --ok:#8fc29b; --scrim:rgba(0,0,0,.6);
+  --shadow-pop:0 8px 28px rgba(0,0,0,.5),0 1px 3px rgba(0,0,0,.4); color-scheme:dark}}
+:root[data-theme="dark"],.theme-dark{
+  --paper:#1e1d1b; --sidebar:#171614; --surface:#262421; --hover:#2d2b27; --selected:#37342e;
+  --line:#34312c; --ink:#f3eee4; --body:#c9c1b2; --muted:#968e80; --control:#8a8278;
+  --accent:#d4a853; --accent-soft:#3d3320; --on-accent:#1c1c1c; --on-ink:#1c1c1c;
+  --danger:#e58e80; --ok:#8fc29b; --scrim:rgba(0,0,0,.6);
+  --shadow-pop:0 8px 28px rgba(0,0,0,.5),0 1px 3px rgba(0,0,0,.4); color-scheme:dark}
+.theme-light{  --paper:#f7f3ea; --sidebar:#ede7da; --surface:#fffdf8; --hover:#e8e1d2; --selected:#e2d9c6;
+  --line:#d2c9b6; --ink:#1c1c1c; --body:#4a443c; --muted:#7a7266; --control:#8a8278;
+  --accent:#d4a853; --accent-soft:#f1e3bd; --on-accent:#1c1c1c; --on-ink:#f7f3ea;
+  --danger:#8f3b2a; --ok:#3f6b4a; --scrim:rgba(28,24,18,.42);
+  --sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --r-sm:6px; --r-md:10px; --r-lg:14px; --r-pill:999px;
+  --shadow-pop:0 8px 28px rgba(28,24,18,.16),0 1px 3px rgba(28,24,18,.1);; color-scheme:light}
+.theme-light,.theme-dark{background:var(--paper);color:var(--body);border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--body);font:400 14px/1.55 var(--sans);letter-spacing:-.005em;margin:0;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1040px;margin:0 auto}
+h1,h2,h3{color:var(--ink);font-family:var(--sans);text-wrap:balance;margin:0}
+h1{font-size:30px;line-height:1.15;font-weight:600;letter-spacing:-.025em}
+h2{font-size:20px;line-height:1.25;font-weight:600;letter-spacing:-.02em}
+h3{font-size:14px;font-weight:600;letter-spacing:-.01em}
+p{margin:0;max-width:68ch}
+a{color:var(--ink);text-decoration-color:var(--accent);text-underline-offset:3px;text-decoration-thickness:2px}
+code{font:500 12px ui-monospace,SFMono-Regular,Menlo,monospace;background:var(--sidebar);padding:1px 5px;border-radius:4px;color:var(--ink)}
+.eyebrow{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:20px;border-bottom:1px solid var(--line)}
+.brand{font-weight:600;color:var(--ink);letter-spacing:-.02em;font-size:15px}
+.brand i{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--accent);margin-right:8px}
+.themebtn{font:500 12px var(--sans);color:var(--ink);background:transparent;border:1px solid var(--control);border-radius:var(--r-sm);padding:5px 10px;cursor:pointer}
+.hero{padding-block:44px 28px;display:grid;gap:14px}
+section{padding-block:40px 8px;display:grid;gap:16px;border-top:1px solid var(--line);margin-top:32px}
+.lead{font-size:15px;color:var(--body)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;display:grid;gap:8px;align-content:start;min-width:0}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font-weight:500;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td:first-child{color:var(--ink);font-weight:500;white-space:nowrap}
+.note{font-size:12px;color:var(--muted)}
+.scroller{overflow-x:auto;padding-bottom:4px}
+.frame-cap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--control);border-radius:var(--r-sm);overflow:hidden}
+.seg button{font:500 12px var(--sans);padding:5px 12px;background:transparent;color:var(--body);border:0;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* ---------- Framework components (these are the proposal) ---------- */
+.btn{font:500 12.5px/1 var(--sans);height:26px;padding:0 11px;border-radius:var(--r-sm);border:1px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.btn-primary{background:var(--ink);color:var(--on-ink)}
+.btn-primary:hover{background:var(--accent);color:var(--on-accent)}
+.btn-secondary{background:transparent;color:var(--ink);border-color:var(--control)}
+.btn-secondary:hover{background:var(--hover)}
+.btn-ghost{background:transparent;color:var(--body)}
+.btn-ghost:hover{background:var(--hover);color:var(--ink)}
+.btn-danger{background:transparent;color:var(--danger);border-color:var(--danger)}
+.btn-sm{height:22px;padding:0 8px;font-size:12px}
+.btn-google{height:32px;padding:0 16px 0 12px;border-radius:var(--r-pill);background:#fff;color:#1f1f1f;border:1px solid #747775;font:500 14px/1 var(--sans);gap:10px;justify-content:center}
+.btn-google:hover{background:#f0f4ff}
+:root[data-theme="dark"] .btn-google,.theme-dark .btn-google{background:#131314;color:#e3e3e3;border-color:#8e918f}
+.theme-light .btn-google{background:#fff;color:#1f1f1f;border-color:#747775}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn-google{background:#131314;color:#e3e3e3;border-color:#8e918f}}
+.btn-google.lg{height:40px;width:100%}
+.toggle{--w:26px;position:relative;width:var(--w);height:15px;border-radius:var(--r-pill);background:var(--control);border:0;cursor:pointer;padding:0;flex:none;transition:background .15s}
+.toggle::after{content:"";position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:50%;background:#fff;transition:transform .15s}
+.toggle[aria-checked="true"]{background:var(--accent)}
+.toggle[aria-checked="true"]::after{transform:translateX(11px);background:#1c1c1c}
+.select{font:400 12.5px var(--sans);height:26px;padding:0 28px 0 10px;border:1px solid var(--control);border-radius:var(--r-sm);background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none' stroke='%238a8278' stroke-width='1.6'%3E%3Cpath d='M1 1l4 4 4-4'/%3E%3C/svg%3E") no-repeat right 10px center;color:var(--ink);appearance:none}
+.input{font:400 12.5px var(--sans);height:28px;padding:0 10px;border:1px solid var(--control);border-radius:var(--r-sm);background:var(--surface);color:var(--ink);width:100%}
+.chip{display:inline-flex;align-items:center;gap:6px;font:500 12px/1 var(--sans);height:22px;padding:0 9px;border-radius:var(--r-pill);border:1px solid var(--line);color:var(--body);background:transparent}
+.chip.sug{height:26px;padding:0 12px;cursor:pointer;font-weight:450;background:var(--surface)}
+.chip.sug:hover{background:var(--hover)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block}
+.dot.ok{background:var(--ok)}
+.ico{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:9px 0;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row .t{color:var(--ink);font-weight:500;font-size:13px}
+.row .d{font-size:12px;color:var(--muted);margin-top:1px}
+
+/* ---------- App shell ---------- */
+.stage{border:1px solid var(--line);border-radius:var(--r-lg);overflow:hidden;background:var(--paper);position:relative}
+.app{display:grid;grid-template-columns:216px 1fr;height:640px;min-width:980px;position:relative;font-size:13px}
+.side{background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;padding:12px 8px 8px;gap:2px;min-height:0}
+.side .wm{display:flex;align-items:center;gap:8px;padding:4px 8px 12px;font-weight:600;color:var(--ink);font-size:14px;letter-spacing:-.02em}
+.side .wm i{width:18px;height:18px;border-radius:6px;background:var(--ink);color:var(--on-ink);display:grid;place-items:center;font-style:normal;font-size:11px;font-weight:600}
+.nav{display:flex;align-items:center;gap:10px;padding:0 8px;height:28px;border-radius:var(--r-sm);color:var(--body);background:transparent;border:0;font:450 13px var(--sans);cursor:pointer;text-align:left;width:100%}
+.nav:hover{background:var(--hover);color:var(--ink)}
+.nav[aria-current="true"]{background:var(--selected);color:var(--ink)}
+.nav .badge{margin-left:auto;font-size:11px;font-weight:600;background:var(--accent);color:var(--on-accent);border-radius:var(--r-pill);padding:1px 6px}
+.side .lbl{font-size:11px;color:var(--muted);padding:14px 8px 4px;font-weight:500}
+.side .grow{flex:1;min-height:0;overflow:hidden}
+.recent{color:var(--body);font-size:12.5px;padding:0 8px;height:28px;display:flex;align-items:center;border-radius:var(--r-sm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer}
+.recent:hover{background:var(--hover)}
+.acct{display:flex;align-items:center;gap:10px;padding:8px;border-radius:var(--r-md);border:0;background:transparent;cursor:pointer;width:100%;text-align:left;font:inherit;color:var(--ink)}
+.acct:hover,.acct[aria-expanded="true"]{background:var(--hover)}
+.av{width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-weight:600;font-size:12px;flex:none}
+.acct .n{font-weight:500;font-size:13px;line-height:1.2}
+.acct .s{font-size:11px;color:var(--muted);line-height:1.2}
+.pop{position:absolute;left:8px;bottom:60px;width:216px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow-pop);padding:6px;z-index:5}
+.pop .who{padding:6px 8px 8px;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line);margin-bottom:4px}
+.pop .nav{height:26px}
+.pop hr{border:0;border-top:1px solid var(--line);margin:4px 0}
+.main{display:flex;flex-direction:column;min-width:0;min-height:0;position:relative}
+.bar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-weight:500;color:var(--ink)}
+.bar .chip{font-weight:450}
+.thread{flex:1;overflow:hidden;padding:8px 0 0;min-height:0}
+.col{max-width:640px;margin:0 auto;padding:0 20px;display:grid;gap:18px}
+.msg-u{justify-self:end;background:var(--hover);color:var(--ink);padding:8px 12px;border-radius:var(--r-lg);max-width:80%}
+.msg-a{color:var(--ink);display:grid;gap:10px}
+.msg-a p{max-width:none}
+.job{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px}
+.job .l{width:28px;height:28px;border-radius:var(--r-sm);background:var(--sidebar);display:grid;place-items:center;font-weight:600;font-size:12px;color:var(--ink);flex:none}
+.job .m{min-width:0;flex:1}
+.job .m b{display:block;color:var(--ink);font-weight:500}
+.job .m span{font-size:12px;color:var(--muted)}
+.appr{border:1px solid var(--accent);background:var(--accent-soft);border-radius:var(--r-md);padding:8px 10px;display:grid;gap:8px;color:var(--ink);font-size:12.5px}
+.appr .acts{display:flex;gap:8px;flex-wrap:wrap}
+.composer{width:100%;max-width:640px;margin:0 auto;padding:0 20px 18px}
+.cbox{background:var(--surface);border:1px solid var(--control);border-radius:var(--r-lg);padding:10px 10px 8px 14px;display:grid;gap:8px}
+.cbox .ph{color:var(--muted);font-size:14px;padding-top:2px}
+.cbox .tools{display:flex;align-items:center;gap:6px}
+.cbox .send{margin-left:auto;width:26px;height:26px;border-radius:50%;background:var(--ink);color:var(--on-ink);border:0;display:grid;place-items:center;cursor:pointer}
+.cbox .iconbtn{width:24px;height:24px;border-radius:var(--r-sm);border:0;background:transparent;color:var(--body);display:grid;place-items:center;cursor:pointer}
+.cbox .iconbtn:hover{background:var(--hover)}
+.homeview{flex:1;display:flex;flex-direction:column;justify-content:center;gap:22px;padding-bottom:30px;min-height:0}
+.homeview h2{text-align:center;font-size:24px;letter-spacing:-.03em;font-weight:600}
+.homeview .composer{padding-bottom:0}
+.sugs{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;max-width:640px;margin:0 auto;padding:0 20px}
+.today{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:0 auto;padding:0 20px}
+.today .c{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:10px 14px;min-width:150px;cursor:pointer}
+.today .c:hover{background:var(--hover)}
+.today .c b{display:block;font-size:20px;color:var(--ink);letter-spacing:-.03em;font-weight:600;line-height:1.2}
+.today .c span{font-size:12px;color:var(--muted)}
+
+/* ---------- Lists, board, chat dock ---------- */
+.split{display:flex;flex:1;min-height:0}
+.listcol{flex:1;min-width:0;display:flex;flex-direction:column;min-height:0}
+.tool{display:flex;gap:6px;align-items:center;padding:4px 12px 8px;flex-wrap:wrap}
+.tool .grow{flex:1}
+.bulk{display:flex;gap:6px;align-items:center;margin:0 12px 6px;padding:4px 8px;background:var(--accent-soft);border:1px solid var(--accent);border-radius:var(--r-sm);font-size:12px;color:var(--ink)}
+.tbl{flex:1;overflow:hidden;font-size:12.5px}
+.tr{display:grid;grid-template-columns:16px minmax(0,2fr) minmax(0,1.1fr) minmax(0,1.5fr) 82px 46px 38px 46px;align-items:center;gap:10px;height:30px;padding:0 12px;border-bottom:1px solid var(--line);color:var(--body);white-space:nowrap}
+.tr>*{overflow:hidden;text-overflow:ellipsis}
+.tr.th{height:26px;font-size:11px;color:var(--muted);font-weight:500;border-top:1px solid var(--line)}
+.tr:not(.th):hover{background:var(--hover)}
+.tr.sel{background:var(--accent-soft)}
+.tr b{color:var(--ink);font-weight:500}
+.tr .acts{display:flex;gap:2px;justify-content:flex-end;opacity:0}
+.tr:hover .acts,.tr.sel .acts{opacity:1}
+.mini{width:22px;height:22px;border-radius:var(--r-sm);border:0;background:transparent;color:var(--body);display:grid;place-items:center;cursor:pointer;padding:0}
+.mini:hover{background:var(--hover)}
+.cb{width:14px;height:14px;border:1px solid var(--control);border-radius:3px;display:inline-grid;place-items:center}
+.cb.on{background:var(--ink);border-color:var(--ink);color:var(--on-ink)}
+.cb .ico{width:10px;height:10px;stroke-width:2.6}
+.match{color:var(--ink);font-variant-numeric:tabular-nums}
+.foot{padding:6px 12px;font-size:11.5px;color:var(--muted);display:flex;justify-content:space-between}
+.board{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:4px 12px 12px;flex:1;min-height:0;overflow:hidden}
+.bcol{background:var(--sidebar);border-radius:var(--r-md);padding:8px;display:grid;gap:6px;align-content:start}
+.bcol h4{margin:0 0 2px;font-size:12px;color:var(--ink);display:flex;justify-content:space-between;font-weight:600}
+.bcol h4 span{color:var(--muted);font-weight:400}
+.bcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:6px 8px;font-size:12px;color:var(--muted)}
+.bcard b{color:var(--ink);font-weight:500;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bcard.flag{border-color:var(--accent)}
+.more{font-size:11.5px;color:var(--muted);padding:2px 4px}
+.dock{width:272px;border-left:1px solid var(--line);display:flex;flex-direction:column;flex:none;min-height:0;font-size:12.5px}
+.dock .dh{height:34px;display:flex;align-items:center;justify-content:space-between;padding:0 10px 0 12px;font-weight:500;color:var(--ink);border-bottom:1px solid var(--line)}
+.dock .dt{flex:1;padding:10px 12px;display:grid;gap:10px;align-content:start;overflow:hidden}
+.dock .msg-u{font-size:12.5px;padding:6px 10px}
+.dock .msg-a{font-size:12.5px;gap:8px}
+.dock .cbox{margin:0 10px 10px;border-radius:var(--r-md);padding:7px 7px 6px 10px;gap:6px}
+.dock .cbox .ph{font-size:12.5px}
+.rl{border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface);overflow:hidden}
+.rrow{display:flex;align-items:center;gap:10px;height:30px;padding:0 10px;border-bottom:1px solid var(--line);font-size:12.5px;white-space:nowrap}
+.rrow .l{width:18px;height:18px;border-radius:4px;background:var(--sidebar);display:grid;place-items:center;font-weight:600;font-size:10.5px;color:var(--ink);flex:none}
+.rrow b{color:var(--ink);font-weight:500;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.rrow .m{color:var(--muted);overflow:hidden;text-overflow:ellipsis;min-width:0;flex:1}
+.rrow:hover{background:var(--hover)}
+.rl .rfoot{padding:5px 10px;font-size:12px;display:flex;justify-content:space-between;align-items:center;color:var(--muted)}
+
+/* ---------- Theme showcase ---------- */
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:14px}
+.mini{}
+.tpanel{border:0;display:grid;grid-template-columns:150px 1fr;min-width:0;font-size:12.5px}
+.tpanel .side{border-right:1px solid var(--line)}
+.tpanel .tmain{padding:14px;display:grid;gap:10px;align-content:start;min-width:0}
+.swt{width:100%;border-collapse:collapse;font-size:12px}
+.swt td,.swt th{padding:6px 10px}
+.swt i{display:inline-block;width:14px;height:14px;border-radius:4px;border:1px solid rgba(128,128,128,.5);vertical-align:-3px;margin-right:6px}
+
+/* ---------- Modal ---------- */
+.scrim{position:absolute;inset:0;background:var(--scrim);display:grid;place-items:center;z-index:10;padding:16px}
+.modal{width:min(720px,100%);height:min(470px,100%);background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-pop);display:grid;grid-template-columns:184px 1fr;overflow:hidden;font-size:13px;color:var(--body)}
+.mtabs{background:var(--sidebar);border-right:1px solid var(--line);padding:12px 8px;display:flex;flex-direction:column;gap:2px;overflow:auto}
+.mtabs .ttl{padding:2px 8px 10px;font-weight:600;color:var(--ink);font-size:14px;letter-spacing:-.02em}
+.mbody{display:flex;flex-direction:column;min-width:0;min-height:0}
+.mhead{display:flex;justify-content:space-between;align-items:center;padding:14px 20px 8px;color:var(--ink)}
+.mhead h3{font-size:15px}
+.xbtn{width:24px;height:24px;border-radius:var(--r-sm);border:0;background:transparent;color:var(--body);cursor:pointer;display:grid;place-items:center}
+.xbtn:hover{background:var(--hover)}
+.mpanel{padding:0 20px 16px;overflow:auto;flex:1}
+.mpanel .grp{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:12px 0 2px}
+
+.modal.two{grid-template-columns:1fr 1fr;width:min(820px,100%)}
+/* ---------- Sign-in ---------- */
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.step{border:1px solid var(--line);border-radius:var(--r-lg);background:var(--paper);padding:20px 18px;display:grid;gap:12px;align-content:start;min-height:360px}
+.step .wm{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--ink);letter-spacing:-.02em}
+.step .wm i{width:20px;height:20px;border-radius:6px;background:var(--ink);color:var(--on-ink);display:grid;place-items:center;font-style:normal;font-size:12px}
+.step h3{font-size:17px;letter-spacing:-.02em;line-height:1.25}
+.step p{font-size:13px}
+.step .sn{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.06em;text-transform:uppercase}
+.perm{display:grid;gap:8px;padding:0;margin:0;list-style:none}
+.perm li{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;color:var(--body)}
+.perm li .ico{margin-top:2px;color:var(--ok)}
+.perm li.no .ico{color:var(--muted)}
+.or{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:12px}
+.or::before,.or::after{content:"";flex:1;border-top:1px solid var(--line)}
+.spin{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--accent);animation:sp 1s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}.toggle,.toggle::after{transition:none}}
+
+/* ---------- Tokens page bits ---------- */
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.sw div{border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;background:var(--surface);font-size:12px}
+.sw i{display:block;height:44px;border-bottom:1px solid var(--line)}
+.sw b{display:block;padding:6px 8px 0;color:var(--ink);font-weight:500}
+.sw span{display:block;padding:0 8px 7px;color:var(--muted);font-size:11px}
+.spec{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.spec .card{gap:12px}
+.spec .lab{font-size:11px;color:var(--muted);font-weight:500;letter-spacing:.06em;text-transform:uppercase}
+.tline{display:flex;align-items:baseline;justify-content:space-between;gap:12px;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:6px}
+.tline:last-child{border:0;padding:0}
+.tline small{color:var(--muted);font-size:11px;white-space:nowrap}
+.q{display:grid;gap:6px}
+.q li{margin-left:18px}
+ol,ul{margin:0;padding-left:18px;display:grid;gap:6px;max-width:72ch}
+</style>
+
+<div class="wrap">
+<div class="top">
+  <div class="brand"><i></i>Turtlebox UX framework <span class="note" style="font-weight:400;margin-left:6px">v0.1 draft for review</span></div>
+  <div class="seg" id="themeseg" role="group" aria-label="Preview theme"><button data-t="auto" aria-pressed="true">Auto</button><button data-t="light" aria-pressed="false">Light</button><button data-t="dark" aria-pressed="false">Dark</button></div>
+</div>
+
+<div class="hero">
+  <div class="eyebrow">Plan for review · nothing is built yet</div>
+  <h1>One Turtlebox look, starting with a CeeVee redesign</h1>
+  <p class="lead">CeeVee moves to a chat-first desktop layout. Job types, which define what CeeVee searches for, get their own place in the sidebar. Settings leave the main navigation and live behind an account menu at the bottom left, which opens a modal with tabs down the left side. Sign in with Google becomes the first thing a new user sees. Type is all sans-serif, smaller and tighter, and controls such as toggles replace most checkboxes and long forms. The same tokens and components become the shared Turtlebox framework, with Golden as the second app to adopt it.</p>
+  <p class="lead">Every mockup below is live. Open the account menu, switch settings tabs, flip the toggles, and try the Light and Dark preview above.</p>
+</div>
+
+<!-- ============ 0 What changes ============ -->
+<section id="changes">
+  <h2>What changes from the current design</h2>
+  <p>The current Turtlebox system was written for the marketing site. These rows replace the parts that conflict with the new direction. Everything else, including the warm neutrals, the single gold accent and the plain-spoken voice, stays.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Area</th><th>Today</th><th>Proposed</th></tr>
+    <tr><td>Typeface</td><td>Cormorant Garamond headings, Inter body</td><td>Inter only. No serif anywhere, including the wordmark.</td></tr>
+    <tr><td>Type size</td><td>17px body, 11px uppercase buttons at 0.3em tracking</td><td>13px body, 13px sentence-case buttons, 14–15px dialog titles. Tracking −0.005em to −0.02em.</td></tr>
+    <tr><td>Corners</td><td>Square everywhere</td><td>6px controls, 10px cards, 14px dialogs and the composer, round toggles and avatars.</td></tr>
+    <tr><td>Depth</td><td>Borders only, no shadows</td><td>Borders for everything, one soft shadow reserved for menus and dialogs.</td></tr>
+    <tr><td>Controls</td><td>Text field and button</td><td>Toggle, segmented control, select, tabs, menu, modal, chat composer, chips.</td></tr>
+    <tr><td>Icons</td><td>None</td><td>One small stroke icon set (16px, 1.6px stroke) for navigation and tools. Text still carries the meaning.</td></tr>
+    <tr><td>Search setup</td><td>Categories on a settings-style page</td><td>Job types in the sidebar, each an editable set of search criteria.</td></tr>
+    <tr><td>App layout</td><td>Top header, pages</td><td>Left sidebar with chat on top, account menu bottom left, settings in a modal.</td></tr>
+    <tr><td>Sign in</td><td>None</td><td>Prominent Sign in with Google button on first launch and on any screen that needs Google.</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ 1 Home / chat ============ -->
+<section id="home">
+  <div class="frame-cap"><div><div class="eyebrow">Mockup 1</div><h2>Home is a conversation</h2></div>
+    <div class="seg" id="homeseg" role="group" aria-label="Home state"><button data-s="home" aria-pressed="true">Empty home</button><button data-s="chat" aria-pressed="false">In a conversation</button><button data-s="types" aria-pressed="false">Job types</button><button data-s="newtype" aria-pressed="false">New job type</button><button data-s="jobs" aria-pressed="false">Jobs list</button><button data-s="apps" aria-pressed="false">Applications</button></div></div>
+  <p>The sidebar keeps the working areas one click away: Chat, Job types, Jobs, Applications, Inbox, Documents and Network. Job types sits directly under Chat because it decides what everything else shows. Chat is the front door. Anything CeeVee needs from the user (a draft to approve, a search to confirm) arrives as a card inside the conversation, and also as a count on the sidebar.</p>
+  <div class="scroller"><div class="stage" id="stage1"><div class="app" id="app1"></div></div></div>
+  <div class="grid2">
+    <div class="card"><h3>Home screen</h3><p class="note" style="max-width:none">Greeting, composer, four starter prompts and three live counts for today. The counts replace the dashboard page the plan had earlier. They are shortcuts, not a second home.</p></div>
+    <div class="card"><h3>Job types</h3><p class="note" style="max-width:none">Each job type is a saved set of search criteria. The sidebar lists them under the Job types item with a count of new matches. Pick one to edit its criteria. The third view above shows the editor.</p></div>
+    <div class="card"><h3>Account menu, bottom left</h3><p class="note" style="max-width:none">Shows name, plan state (trial days left or Licensed) and opens a short menu. Each item deep-links to a tab in the settings modal, so the menu is quick access, not a second settings page.</p></div>
+  </div>
+</section>
+
+<!-- job types -->
+<section id="jobtypes" style="margin-top:8px">
+  <div><div class="eyebrow">Job types</div><h2>A job type is a saved search with its own rules</h2></div>
+  <p>Each job type holds the criteria CeeVee searches with, where it looks, and how much it may do on its own for that type. A user might have "Design leadership" in Denver, "Product management" remote only, and a short-term "Remote contract" type. Jobs and applications are tracked by job type and by company, so the Jobs page can show everything or one type.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Group</th><th>Criteria</th></tr>
+    <tr><td>Role</td><td>Name, job titles, level, function, industry</td></tr>
+    <tr><td>Where and how much</td><td>Location and radius, remote and hybrid, minimum salary, words to leave out</td></tr>
+    <tr><td>Where CeeVee looks</td><td>Company career pages, job boards and posting services, alert emails, watched companies</td></tr>
+    <tr><td>What happens next</td><td>Daily search on or off, automation level for this type, alerts</td></tr>
+  </table></div>
+  <ul>
+    <li>Chat can create and change job types: "Add a remote product management type above $170k." CeeVee shows a confirm card before saving.</li>
+    <li>A first job type is proposed during onboarding from the resume.</li>
+    <li>On the name: "Job types" reads clearly and matches how you described it. Other candidates are "Searches" (most literal), "Roles" and "Job targets". I used "Job types" in the mockups. Say if you prefer another.</li>
+  </ul>
+</section>
+
+<!-- lists and chat -->
+<section id="lists" style="margin-top:8px">
+  <div><div class="eyebrow">Mockup 1, continued</div><h2>Lists, density and how they work with chat</h2></div>
+  <p>The first draft sized controls like a marketing site, and every result was a card. That cannot hold 143 jobs or 40 applications. Use the Jobs list and Applications views in the first mockup to see the answer below.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Element</th><th>First draft</th><th>Now</th></tr>
+    <tr><td>Button</td><td>32px tall, 13px text</td><td>26px tall, 12.5px text. Small is 22px and is used inside rows and cards.</td></tr>
+    <tr><td>Select, toggle, chip</td><td>30px, 18px, 24px</td><td>26px, 15px, 22px</td></tr>
+    <tr><td>Table row</td><td>Cards, about 52px each</td><td>30px, one line. Header 26px.</td></tr>
+    <tr><td>Row actions</td><td>Text buttons on every row</td><td>Two 22px icon buttons that appear on hover or selection. Everything else goes through selection and the bulk bar.</td></tr>
+    <tr><td>Navigation item</td><td>30px</td><td>28px. Sub-items 26px.</td></tr>
+  </table></div>
+  <div class="grid2">
+    <div class="card"><h3>Jobs: a table, not cards</h3><p class="note" style="max-width:none">One row per job: title, company, job type, pay, posted, match. Filters sit above as removable chips. Sort and group by job type or company. Rows load as you scroll, so 143 or 5,000 jobs cost the same. New jobs since the last visit are the default filter, so the list opens short.</p></div>
+    <div class="card"><h3>Applications: a board and a table</h3><p class="note" style="max-width:none">Board by default, with a column per stage and compact cards. Each column shows its top cards and "+N more". Table view takes over when there are many. Stale applications are flagged with a gold outline and a plain-words reason, such as "10d, no reply".</p></div>
+    <div class="card"><h3>Selection and bulk actions</h3><p class="note" style="max-width:none">Select rows with the checkbox, the keyboard (x) or shift-click. A bulk bar appears with Draft applications, Save, Dismiss. This keeps the buttons per row to icons and keeps the primary action in one place.</p></div>
+    <div class="card"><h3>Detail on demand</h3><p class="note" style="max-width:none">Clicking a row opens the job or application in a side panel with the posting, tailored resume, letter and history. The list stays visible behind it, so moving down the list is one keystroke.</p></div>
+  </div>
+  <h3>How chat and lists work together</h3>
+  <ul>
+    <li><b style="color:var(--ink)">In chat, results are a short list, not a wall.</b> CeeVee shows at most three to five compact rows, then "Show all in Jobs", which opens the full table with the same filters applied.</li>
+    <li><b style="color:var(--ink)">On every list page, chat is a side panel.</b> "Ask CeeVee" opens a panel that knows what you are looking at: the current filters and the selected rows. It can change the list ("only pay above $170k, sorted by match"), act on the selection ("draft applications for these"), or answer questions about it. It hides with one click.</li>
+    <li><b style="color:var(--ink)">Chat changes are visible and reversible.</b> Anything CeeVee does to a list appears as filter chips you can remove, so you always see why a list looks the way it does.</li>
+    <li><b style="color:var(--ink)">Approvals stay in one place.</b> An approval card in chat is a compact two-line item with small buttons. The same items also collect under Inbox, filtered to "Needs you", so nothing depends on scrolling a conversation.</li>
+  </ul>
+</section>
+
+<!-- chat and forms -->
+<section id="chatforms" style="margin-top:8px">
+  <div><div class="eyebrow">Mockup 1, continued</div><h2>Chat and forms edit the same thing</h2></div>
+  <p>The answer is a three-pane workspace for everyday work, and modals for focused tasks. Open "Job types" and "New job type" in the first mockup. Both ways in change one underlying job type, so a user never has to pick between talking and filling in a form.</p>
+  <div class="grid2">
+    <div class="card"><h3>Three panes</h3><p class="note" style="max-width:none">Navigation on the left, the work surface in the middle (a list, a form or a detail view), and chat on the right. The chat pane knows what the middle pane shows. It is on by default for Job types, Jobs and Applications and can be hidden. On the Chat page itself the middle pane is the conversation, and the right pane opens only when chat produces something to edit.</p></div>
+    <div class="card"><h3>Chat fills the form</h3><p class="note" style="max-width:none">When chat changes a job type, the changed fields in the form get a gold dot, show the old value, and the bar says how many changes are unsaved. Accept all, Undo, or edit any field by hand. Nothing is saved until the user accepts, which matches the approval model.</p></div>
+    <div class="card"><h3>The form steers chat</h3><p class="note" style="max-width:none">Edits made by hand are visible to chat. The context chip at the bottom of the chat pane says what it is looking at, so "make it hybrid" refers to the open job type and the selected rows, not to a guess.</p></div>
+    <div class="card"><h3>Modals for focused tasks</h3><p class="note" style="max-width:none">Creating a job type opens a two-column modal. Chat on the left asks what the user wants, and a live draft form on the right fills in as it understands. Either side works alone. Review of an application draft uses the same shape: the document in one column and chat in the other.</p></div>
+  </div>
+  <div class="tablewrap"><table>
+    <tr><th>Use</th><th>For</th><th>Examples</th></tr>
+    <tr><td>Three-pane workspace</td><td>Ongoing work on things that already exist</td><td>Editing a job type, filtering Jobs, moving applications, answering recruiters</td></tr>
+    <tr><td>Two-column modal</td><td>A short task with a clear end: create, review, approve</td><td>New job type, review a tailored resume and letter before submit, import a resume</td></tr>
+    <tr><td>Settings modal with tabs</td><td>Occasional setup, no chat needed</td><td>Models, accounts, automation level, license</td></tr>
+    <tr><td>Small confirm dialog</td><td>One decision</td><td>Delete a job type, sign out, stop automatic applying</td></tr>
+  </table></div>
+</section>
+
+<!-- references -->
+<section id="refs" style="margin-top:8px">
+  <div><div class="eyebrow">References</div><h2>What we borrowed from existing AI apps</h2></div>
+  <p>I read the public documentation and announcements for Unsloth Studio and the Claude apps. Neither page set describes spacing, type sizes or where settings live, so those parts of the design come from your description and from the screenshots you have seen, not from the sources below.</p>
+  <div class="tablewrap"><table>
+    <tr><th>Reference</th><th>Pattern</th><th>Where it shows up here</th></tr>
+    <tr><td>Unsloth Studio</td><td>Left sidebar with a New chat button that returns to chat from any page. Chat is one top-level area beside the work areas.</td><td>Sidebar with New chat, Chat and the working areas.</td></tr>
+    <tr><td>Unsloth Studio</td><td>Model picker in the top-left of the chat, with search, recommended models and a downloaded or fine-tuned tab.</td><td>The model chip in the composer opens the same kind of picker. Full model management stays in Settings, Models.</td></tr>
+    <tr><td>Unsloth Studio</td><td>Long forms are stacked sections, with collapsible groups and small tabs inside a group. A bottom action card holds Save and Reset, and the primary action stays disabled until required fields are set. Errors appear inline.</td><td>Job type editor sections. Long groups collapse, and Save lives in the bar with a count of unsaved changes.</td></tr>
+    <tr><td>Unsloth Studio</td><td>A long job (training) opens a full-page progress view with a phase log, and a stop button that asks Stop and save or Cancel.</td><td>Long CeeVee runs, such as a search across many sites or a batch of applications, use the same pattern: a progress view, a plain log, and a stop dialog.</td></tr>
+    <tr><td>Unsloth Studio</td><td>Chat and the work forms are separate pages. The sources do not say they can sit side by side.</td><td>This is the gap the three-pane layout fills.</td></tr>
+    <tr><td>Claude desktop apps</td><td>A sidebar of sessions that can be filtered by status or project and grouped. Projects can be custom sections.</td><td>Job types as sidebar sections with counts. Applications filter by status.</td></tr>
+    <tr><td>Claude desktop apps</td><td>Side chat opens in its own pane, and panes (preview, diff, chat) can be arranged. Split view puts two chats side by side.</td><td>The chat pane beside a list or form. Pane arrangement by dragging is a later option, not in version one.</td></tr>
+    <tr><td>Claude desktop apps</td><td>Created content (artifacts) opens in a panel beside the chat and is edited there.</td><td>A job type, resume or letter drafted in chat opens in the middle pane or the two-column modal as an editable form.</td></tr>
+    <tr><td>Claude desktop apps</td><td>Detail level toggle (Verbose, Normal, Summary) and a shortcut list on Cmd or Ctrl plus slash.</td><td>A density setting in General, and the same shortcut sheet, including j, k and x in lists.</td></tr>
+  </table></div>
+  <p class="note">Sources: Unsloth Studio documentation (unsloth.ai/docs/new/studio/start) and a university summary of it; the Claude Code desktop redesign post (claude.com/blog/claude-code-desktop-redesign); a third-party write-up of the Claude app redesign (mindstudio.ai); Anthropic's artifacts article. If you have screenshots of specific screens you want matched, send them and I will compare against them directly.</p>
+</section>
+
+<!-- themes -->
+<section id="themes" style="margin-top:8px">
+  <div><div class="eyebrow">Themes</div><h2>Light and dark, both first class</h2></div>
+  <p>Every component is written against role tokens, so a theme is only a different set of values. The default follows the computer's setting. Users can force Light or Dark under Settings, General, Theme, and the page-wide switch at the top of this page does the same here. Below, the same screen is rendered in both themes at once.</p>
+  <div class="duo" id="duo"></div>
+  <div class="tablewrap"><table class="swt" id="swtable"></table></div>
+  <p class="note">Dark is warm charcoal, not black, so gold stays the only accent. Text pairs hold 4.5:1 in both themes. Gold is a fill, never text, and the Google button switches to Google's own dark variant.</p>
+</section>
+
+<!-- ============ 2 Settings modal ============ -->
+<section id="settings">
+  <div><div class="eyebrow">Mockup 2</div><h2>Settings is a modal with tabs on the left</h2></div>
+  <p>Everything you set once or change occasionally moves here: profile and resume, automation levels, models, connected accounts, document storage, notifications, license and updates. Nothing in the modal is needed for daily work. Search criteria are not here, because they change as the search changes: they live under Job types in the sidebar. Escape closes it, and each tab has a stable name so the account menu can open it directly.</p>
+  <div class="scroller"><div class="stage" style="background:var(--scrim)"><div style="padding:20px;display:grid;place-items:center;min-width:760px" id="modalhost"></div></div></div>
+  <div class="tablewrap"><table>
+    <tr><th>Tab</th><th>Holds</th><th>Replaces today</th></tr>
+    <tr><td>General</td><td>Theme, launch at login, tray icon, scheduled search time, language</td><td>Settings page, top section</td></tr>
+    <tr><td>Profile</td><td>Resume source, LinkedIn import, contact details, work history edits</td><td>Welcome and onboarding re-entry</td></tr>
+        <tr><td>Automation</td><td>Global approval level, per-category override, per-action Off / Ask / Auto, caps</td><td>Approval settings</td></tr>
+    <tr><td>Models</td><td>Local model choice and download, hardware use, optional cloud key</td><td>Models panel</td></tr>
+    <tr><td>Accounts</td><td>Google sign-in and Gmail read access, browser control mode, Drive storage</td><td>Scattered connection prompts</td></tr>
+    <tr><td>Documents</td><td>Storage folder, PDF and DOCX defaults, resume and letter templates</td><td>Documents page options</td></tr>
+    <tr><td>Notifications</td><td>New-job alerts, reply alerts, quiet hours</td><td>New</td></tr>
+    <tr><td>License and updates</td><td>Trial or key, machines used, update channel, version, send feedback</td><td>License page</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ 3 Sign-in ============ -->
+<section id="signin">
+  <div><div class="eyebrow">Mockup 3</div><h2>Sign in with Google</h2></div>
+  <p>The button follows Google's published pill style (white or dark, G mark, 40px or taller) so users recognise it. It sits where the user's eye lands first, above any other choice. Google sign-in stays optional, as already decided. Skipping it leaves local mode fully working, with email through an app password. The explainer step says in plain words what Gmail access is for, matching the Google verification submission.</p>
+  <div class="flow" id="flow"></div>
+  <ul>
+    <li>The same button appears in the Accounts tab and inline in chat when CeeVee needs Gmail ("Connect Google so I can see replies").</li>
+    <li>The browser handoff uses the system browser with a loopback redirect. The app window shows a waiting state with Cancel, never an embedded login page.</li>
+    <li>The account menu shows the Google avatar and email once signed in. Signed out, it shows a Sign in row at the top of the menu.</li>
+  </ul>
+</section>
+
+<!-- ============ 4 Tokens ============ -->
+<section id="tokens">
+  <div><div class="eyebrow">Framework</div><h2>Tokens</h2></div>
+  <p>Role names stay the same as today, so existing CeeVee code keeps compiling. New roles are marked. Components are written against role names, never hex. Light and dark are both first class.</p>
+  <div class="sw" id="sw"></div>
+  <div class="spec">
+    <div class="card"><div class="lab">Type · Inter only</div>
+      <div class="tline" style="font-size:20px;font-weight:600;letter-spacing:-.025em">Page title<small>20 / 25 · 600</small></div>
+      <div class="tline" style="font-size:15px;font-weight:600;letter-spacing:-.02em">Dialog title<small>15 / 20 · 600</small></div>
+      <div class="tline" style="font-size:14px">Chat text and composer<small>14 / 22 · 400</small></div>
+      <div class="tline" style="font-size:13px">Body, buttons, fields<small>13 / 20 · 400, 500</small></div>
+      <div class="tline" style="font-size:12px;color:var(--muted)">Help text, metadata<small>12 / 17 · 400</small></div>
+      <div class="tline" style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500">Group label<small>11 · 500 · +0.06em</small></div>
+    </div>
+    <div class="card"><div class="lab">Space · 4px base</div>
+      <div class="tline">space-1 · 4<small>icon to label</small></div>
+      <div class="tline">space-2 · 8<small>inside controls</small></div>
+      <div class="tline">space-3 · 12<small>list rows, card gaps</small></div>
+      <div class="tline">space-4 · 16<small>card padding, gutters</small></div>
+      <div class="tline">space-5 · 20<small>modal padding</small></div>
+      <div class="tline">space-6 · 32<small>between sections</small></div>
+    </div>
+    <div class="card"><div class="lab">Shape and motion</div>
+      <div class="tline">radius-sm · 6<small>buttons, fields, menu rows</small></div>
+      <div class="tline">radius-md · 10<small>cards, menus</small></div>
+      <div class="tline">radius-lg · 14<small>modal, composer</small></div>
+      <div class="tline">radius-pill<small>chips, toggle, Google button</small></div>
+      <div class="tline">shadow-pop<small>menus and modal only</small></div>
+      <div class="tline">motion · 150ms ease-out<small>none under reduced motion</small></div>
+    </div>
+  </div>
+  <div class="note">Contrast: ink and body on paper, surface and sidebar hold 4.5:1 in both themes. Gold is still never text. A toggle in the on state is gold with a charcoal knob, and its label always says what it controls, so state never relies on color alone.</div>
+</section>
+
+<!-- ============ 5 Components ============ -->
+<section id="components">
+  <div><div class="eyebrow">Framework</div><h2>Component set, version 1</h2></div>
+  <p>About twenty-five components cover every CeeVee screen in the plan. The first six are the structural pieces that define the Turtlebox look; the rest are small and mostly styling over the tokens.</p>
+  <div class="spec" id="specimens"></div>
+  <div class="tablewrap"><table>
+    <tr><th>Group</th><th>Components</th></tr>
+    <tr><td>Shell</td><td>AppShell, Sidebar, NavItem, AccountMenu, TopBar</td></tr>
+    <tr><td>Chat</td><td>Thread, UserMessage, AssistantMessage, Composer (model chip, attach, send), SuggestionChip, ApprovalCard, ResultRow</td></tr>
+    <tr><td>Overlay</td><td>Modal with tabs (SettingsModal), TwoColumnModal (chat and form), Popover menu, Toast, ConfirmDialog</td></tr>
+    <tr><td>Controls</td><td>Button (primary, secondary, ghost, danger, Google), IconButton, Toggle, Segmented, Select, TextField, Slider</td></tr>
+    <tr><td>Lists</td><td>DataTable (virtualized, sortable, grouped), FilterBar and filter chips, BulkBar, Board and BoardCard, DetailPanel, ResultList (for chat), ChatDock</td></tr>
+    <tr><td>Display</td><td>Chip, ChipInput (add and remove tags), StatusDot, SettingRow (title, hint, control), Avatar, EmptyState, Table</td></tr>
+  </table></div>
+</section>
+
+<!-- ============ 6 Mapping + rollout ============ -->
+<section id="rollout">
+  <div><div class="eyebrow">Plan</div><h2>How CeeVee moves over</h2></div>
+  <p>Small pull requests against main, each one passing tests and evals before merge. CeeVee's UI is SvelteKit, so the first component implementation is Svelte on top of plain CSS variables. The CSS and tokens are framework-neutral, so another app can use them without Svelte.</p>
+  <ol>
+    <li><b style="color:var(--ink)">Tokens and base CSS.</b> Replace fonts and sizes, add the new roles, keep old role names working. No visible layout change except type and corners.</li>
+    <li><b style="color:var(--ink)">Core controls.</b> Button, Toggle, Segmented, Select, TextField, Chip, SettingRow, with unit tests and a keyboard and contrast check.</li>
+    <li><b style="color:var(--ink)">App shell.</b> Sidebar, account menu and the new navigation. Existing pages keep working inside it.</li>
+    <li><b style="color:var(--ink)">Settings modal.</b> Move the existing settings page into tabs, one tab at a time, then delete the page.</li>
+    <li><b style="color:var(--ink)">Job types.</b> Sidebar item, list and criteria editor on top of the existing categories data, then filter the Jobs page by type.</li>
+    <li><b style="color:var(--ink)">Three-pane workspace and chat handoff.</b> Chat pane that reads the open page, the marked-changes pattern on forms, and the two-column modal for creating a job type.</li>
+    <li><b style="color:var(--ink)">Lists.</b> DataTable with filters, selection and bulk bar, applied to Jobs first, then Applications with the board view and the chat panel.</li>
+    <li><b style="color:var(--ink)">Chat home.</b> Home view, composer, thread, approval cards wired to the existing approvals queue and profile-update confirmations.</li>
+    <li><b style="color:var(--ink)">Sign in with Google.</b> Welcome step, explainer, waiting state and the Accounts tab, on the existing OAuth plumbing.</li>
+    <li><b style="color:var(--ink)">Retire the old header and pages that the chat and modal replace.</b> Jobs, Applications, Inbox, Documents and Network stay as full pages, restyled.</li>
+  </ol>
+</section>
+
+<!-- ============ 7 Where it lives ============ -->
+<section id="where">
+  <div><div class="eyebrow">Proposal only · not created</div><h2>Where the shared framework should live</h2></div>
+  <p>Once you approve the design, the framework needs a home every app can pull from. Three options:</p>
+  <div class="tablewrap"><table>
+    <tr><th>Option</th><th>Pros</th><th>Cons</th></tr>
+    <tr><td>A. New repo, <code>turtlebox-ui</code> (recommended)</td><td>Single source for tokens, CSS and components. Apps pin a version. A browsable preview page and the Design System artifact can be generated from it. Does not tie to the website repo.</td><td>One more repo to maintain. Needs a small release step.</td></tr>
+    <tr><td>B. Folder in <code>highturtle</code> (<code>turtlebox/design-system/</code>)</td><td>Where the current system already lives. Nothing new to create.</td><td>Mixes UI code with the site and billing backend. Desktop apps would depend on the whole repo.</td></tr>
+    <tr><td>C. Existing shared repo (<code>box-common</code>)</td><td>Already a shared place if its purpose fits.</td><td>I have not read it, so I cannot say whether it fits. Golden would consume whichever option you pick.</td></tr>
+  </table></div>
+  <p>With option A the layout would be <code>tokens/</code> (JSON source, generated CSS), <code>css/</code> (framework-neutral component styles), <code>svelte/</code> (components for CeeVee), <code>docs/</code> (usage and the preview page), and a version tag per release. CeeVee consumes it as a pinned git dependency at first, and as a package later if there are more than two apps.</p>
+</section>
+
+<section id="questions">
+  <h2>Open questions</h2>
+  <p>These are posted as cards in the thread so you can answer with one tap.</p>
+  <ul class="q">
+    <li>Golden is the second app. I have not read its code yet, so the component list may grow once I do.</li>
+    <li>Do you approve dropping square corners and borders-only depth for the app shell?</li>
+    <li>Do you approve option A for where the framework lives?</li>
+  </ul>
+</section>
+</div>
+
+<script>
+(function(){
+  var $=function(s,r){return (r||document).querySelector(s)};
+  var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  var P={
+    chat:'<path d="M4 5h16v11H9l-5 4z"/>',jobs:'<rect x="3" y="7" width="18" height="12" rx="2"/><path d="M9 7V5h6v2"/>',
+    apps:'<path d="M5 12l5 5 9-10"/>',inbox:'<path d="M3 13l3-8h12l3 8v6H3z"/><path d="M3 13h5l1 3h6l1-3h5"/>',
+    docs:'<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/>',net:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3 3-5 6-5s6 2 6 5"/><path d="M16 5a3 3 0 010 6M18 15c2 .8 3 2.4 3 5"/>',
+    plus:'<path d="M12 5v14M5 12h14"/>',up:'<path d="M12 19V5M6 11l6-6 6 6"/>',clip:'<path d="M20 11l-8 8a5 5 0 01-7-7l9-9a3.5 3.5 0 015 5l-9 9a2 2 0 01-3-3l8-8"/>',
+    gear:'<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>',
+    x:'<path d="M6 6l12 12M18 6L6 18"/>',check:'<path d="M5 12l5 5 9-10"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+    sliders:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>',
+    shield:'<path d="M12 3l8 3v6c0 5-4 8-8 9-4-1-8-4-8-9V6z"/>',cpu:'<rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4"/>',
+    link:'<path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/>',
+    folder:'<path d="M3 6h7l2 2h9v11H3z"/>',bell:'<path d="M6 17V11a6 6 0 0112 0v6l2 2H4z"/><path d="M10 21h4"/>',key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>',
+    search:'<circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/>',help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 .5c0 1.5-2.5 2-2.5 3.5M12 17h.01"/>',out:'<path d="M9 4H4v16h5M16 8l4 4-4 4M20 12H9"/>',
+    layers:'<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',chev:'<path d="M7 15l5 5 5-5M7 9l5-5 5 5"/>'
+  };
+  function ic(n){return '<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">'+P[n]+'</svg>'}
+  var G='<svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 019.5 24c0-1.6.3-3.2.8-4.7l-7.9-6.1A24 24 0 000 24c0 3.9.9 7.5 2.6 10.8z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>';
+  function googleBtn(cls,label){return '<button class="btn btn-google '+(cls||'')+'" type="button">'+G+'<span>'+(label||'Sign in with Google')+'</span></button>'}
+  function tog(on,label){return '<button class="toggle" type="button" role="switch" aria-checked="'+(on?'true':'false')+'" aria-label="'+label+'"></button>'}
+  function srow(t,d,ctl){return '<div class="row"><div><div class="t">'+t+'</div>'+(d?'<div class="d">'+d+'</div>':'')+'</div>'+ctl+'</div>'}
+  function sel(opts,cur){return '<select class="select">'+opts.map(function(o){return '<option'+(o===cur?' selected':'')+'>'+o+'</option>'}).join('')+'</select>'}
+
+  /* theme preview */
+  function setTheme(t){
+    var r=document.documentElement; if(t==='auto')r.removeAttribute('data-theme'); else r.setAttribute('data-theme',t);
+    $$('#themeseg button').forEach(function(x){x.setAttribute('aria-pressed',x.dataset.t===t)});
+  }
+  $$('#themeseg button').forEach(function(b){b.onclick=function(){setTheme(b.dataset.t)}});
+
+  /* settings modal builder */
+  var TABS=[['general','General','sliders'],['profile','Profile','user'],['automation','Automation','shield'],['models','Models','cpu'],['accounts','Accounts','link'],['documents','Documents','folder'],['notifications','Notifications','bell'],['license','License and updates','key']];
+  var PANELS={
+    general:function(){return '<div class="grp">Appearance</div>'+srow('Theme','Follows your system by default','<div class="seg"><button aria-pressed="true">System</button><button aria-pressed="false">Light</button><button aria-pressed="false">Dark</button></div>')+
+      '<div class="grp">Behavior</div>'+srow('Open at login','Start CeeVee in the tray when you sign in to your computer',tog(true,'Open at login'))+srow('Keep running in the tray','Lets scheduled searches and alerts run with the window closed',tog(true,'Keep running in the tray'))+srow('Search every morning at','CeeVee checks your categories once a day',sel(['6:00 AM','7:00 AM','8:00 AM','Manual only'],'7:00 AM'))},
+    automation:function(){return '<div class="grp">Default level</div>'+srow('How much CeeVee does on its own','Applies everywhere unless a category overrides it',sel(['Manual','Assisted','Review before submit','Autopilot','Full automatic'],'Review before submit'))+
+      '<div class="grp">Actions</div>'+srow('Draft resumes and cover letters','Always on. Edit any draft by chatting with CeeVee','<span class="chip"><span class="dot ok"></span>Automatic</span>')+srow('Fill application forms','Stops before Submit unless the level allows it',sel(['Off','Ask','Auto'],'Ask'))+srow('Reply to recruiter email','Drafts first, sends only with your approval',sel(['Off','Ask','Auto'],'Ask'))+
+      '<div class="grp">Limits</div>'+srow('Applications per day','Hard cap, even in Full automatic',sel(['5','10','20','40'],'10'))},
+    models:function(){return '<div class="grp">Language model</div>'+srow('Model','Runs on this computer. Nothing leaves it',sel(['Qwen3 8B · recommended','Qwen3 4B · faster','Qwen3 14B · needs 16 GB'],'Qwen3 8B · recommended'))+
+      srow('Downloaded','4.7 GB on disk','<span class="chip"><span class="dot ok"></span>Ready</span>')+srow('Use graphics chip','Faster replies on Apple silicon and recent GPUs',tog(true,'Use graphics chip'))+
+      '<div class="grp">Optional</div>'+srow('Cloud model key','Only if you want a hosted model for harder drafts','<button class="btn btn-secondary btn-sm" type="button">Add key</button>')},
+    accounts:function(){return '<div class="grp">Google</div><div class="row"><div style="display:flex;gap:12px;align-items:center"><div class="av">H</div><div><div class="t">Not connected</div><div class="d">Sign in so CeeVee can read recruiter replies in Gmail. It never sends mail without your approval.</div></div></div>'+googleBtn('', 'Sign in with Google')+'</div>'+
+      '<div class="grp">Browser control</div>'+srow('Mode','Built in works out of the box. Chrome DevTools is for advanced setups',sel(['Built in','Chrome DevTools'],'Built in'))+
+      '<div class="grp">Storage</div>'+srow('Save documents to Google Drive','Off keeps everything in your Documents folder',tog(false,'Save documents to Google Drive'))}
+  };
+  function generic(id){var t=TABS.filter(function(x){return x[0]===id})[0];
+    var map={profile:[['Resume','Replace or re-import your base resume','Import'],['LinkedIn','Import your connections export','Import']],
+      categories:[['Categories','Industry, function and level sets that drive searches','Edit'],['Watched companies','Always check these career pages','Edit']],
+      documents:[['Folder','Documents/CeeVee','Change'],['Default output','PDF via Typst','Change']],
+      notifications:[['New jobs','Tell me when a category has new matches','toggle'],['Replies','Tell me when a recruiter writes back','toggle']],
+      license:[['License','Trial · 9 days left','Enter key'],['Updates','Check automatically','toggle']]}[id]||[];
+    return map.map(function(r){return srow(r[0],r[1],r[2]==='toggle'?tog(true,r[0]):'<button class="btn btn-secondary btn-sm" type="button">'+r[2]+'</button>')}).join('')+'<p class="note" style="margin-top:12px">Remaining controls for this tab follow the same row pattern.</p>'}
+  function buildModal(host,tab,onClose){
+    host.innerHTML='<div class="modal" role="dialog" aria-modal="true" aria-label="Settings"><div class="mtabs" role="tablist" aria-orientation="vertical"><div class="ttl">Settings</div>'+
+      TABS.map(function(t){return '<button class="nav" role="tab" data-tab="'+t[0]+'" aria-selected="'+(t[0]===tab)+'" aria-current="'+(t[0]===tab)+'">'+ic(t[2])+'<span>'+t[1]+'</span></button>'}).join('')+'</div>'+
+      '<div class="mbody"><div class="mhead"><h3 id="mt"></h3>'+(onClose?'<button class="xbtn" type="button" aria-label="Close settings">'+ic('x')+'</button>':'<span></span>')+'</div><div class="mpanel" role="tabpanel"></div></div></div>';
+    function show(id){
+      $$('.mtabs .nav',host).forEach(function(b){var on=b.dataset.tab===id;b.setAttribute('aria-selected',on);b.setAttribute('aria-current',on)});
+      $('#mt',host).textContent=TABS.filter(function(x){return x[0]===id})[0][1];
+      $('.mpanel',host).innerHTML=(PANELS[id]||function(){return generic(id)})();
+    }
+    $$('.mtabs .nav',host).forEach(function(b){b.onclick=function(){show(b.dataset.tab)}});
+    var x=$('.xbtn',host); if(x&&onClose)x.onclick=onClose;
+    show(tab);
+  }
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('.toggle'); if(t){t.setAttribute('aria-checked',t.getAttribute('aria-checked')==='true'?'false':'true');return}
+    var sb=e.target.closest('.row .seg button,.mpanel .seg button'); if(sb){var sg=sb.parentNode;$$('button',sg).forEach(function(x){x.setAttribute('aria-pressed',x===sb)});var tm={System:'auto',Light:'light',Dark:'dark'}[sb.textContent.trim()];if(tm&&sg.closest('.mpanel')&&$('.mpanel .row .t',sg.closest('.mpanel'))&&sg.closest('.row').querySelector('.t').textContent==='Theme')setTheme(tm)}
+  });
+  buildModal($('#modalhost'),'general',null);
+
+  /* app mockup */
+  var state='home', menuOpen=false, modalTab=null, newType=false;
+  var JTYPES=[['Design leadership','5'],['Product management','2'],['Remote contract','']];
+  function sideHtml(){
+    var nav=[['chat','Chat','chat',''],['types','Job types','layers',''],['jobs','Jobs','jobs','5'],['apps','Applications','apps','2'],['inbox','Inbox','inbox','1'],['docs','Documents','docs',''],['net','Network','net','']];
+    return '<aside class="side"><div class="wm"><i>C</i>CeeVee</div>'+
+      '<button class="nav" type="button">'+ic('plus')+'New chat</button>'+
+      nav.map(function(n){var cur=(n[0]==='chat'&&(state==='home'||state==='chat'))||n[0]===state;
+        var h='<button class="nav" type="button" '+'data-go="'+(n[0]==='chat'?'home':n[0])+'" '+(cur?'aria-current="true"':'')+'>'+ic(n[2])+n[1]+(n[3]?'<span class="badge">'+n[3]+'</span>':'')+'</button>';
+        if(n[0]==='types')h+=JTYPES.map(function(t,i){return '<button class="nav sub" type="button" data-go="types" style="padding-left:34px;height:26px;font-size:12.5px" '+(state==='types'&&i===0?'aria-current="true"':'')+'><span style="flex:1;overflow:hidden;text-overflow:ellipsis">'+t[0]+'</span><span class="note">'+t[1]+'</span></button>'}).join('')+'<button class="nav sub" type="button" data-new style="padding-left:34px;height:26px;font-size:12.5px;color:var(--muted)">+ New job type</button>';
+        return h}).join('')+
+      '<div class="lbl">Recent</div><div class="grow"><div class="recent">Product design roles, Denver</div><div class="recent">Tighten the Acme cover letter</div><div class="recent">Why was I rejected by Northwind?</div><div class="recent">Update my work history</div></div>'+
+      '<button class="acct" id="acct" type="button" aria-haspopup="menu" aria-expanded="'+menuOpen+'"><span class="av">H</span><span style="flex:1;min-width:0"><div class="n">Howard</div><div class="s">Trial · 9 days left</div></span>'+ic('chev')+'</button>'+
+      (menuOpen?'<div class="pop" role="menu"><div class="who">howard@example.com</div>'+
+        [['general','Settings','gear'],['profile','Profile and resume','user'],['automation','Automation','shield'],['models','Models','cpu'],['accounts','Accounts','link'],['license','License and updates','key']].map(function(m){return '<button class="nav" role="menuitem" data-open="'+m[0]+'" type="button">'+ic(m[2])+m[1]+'</button>'}).join('')+
+        '<hr><button class="nav" type="button">'+ic('help')+'Help</button><button class="nav" type="button">'+ic('out')+'Sign out</button></div>':'')+'</aside>';
+  }
+  function composer(ph){return '<div class="composer"><div class="cbox"><div class="ph">'+ph+'</div><div class="tools"><button class="iconbtn" type="button" aria-label="Attach">'+ic('clip')+'</button><span class="chip"><span class="dot ok"></span>Qwen3 8B · on this computer</span><button class="send" type="button" aria-label="Send">'+ic('up')+'</button></div></div></div>'}
+  function chg(t,was,ctl){return '<div class="row" style="background:var(--accent-soft);margin:0 -8px;padding-left:8px;padding-right:8px;border-radius:var(--r-sm)"><div><div class="t"><span class="dot" style="margin-right:6px"></span>'+t+'</div><div class="d">Changed in chat &middot; was '+was+'</div></div>'+ctl+'</div>'}
+  function chips(a,hl){return '<div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:260px">'+a.map(function(x,i){return '<span class="chip"'+(hl&&i===a.length-1?' style="border-color:var(--accent);background:var(--accent-soft)"':'')+'>'+x+' <span style="color:var(--muted)">&times;</span></span>'}).join('')+'<span class="chip" style="border-style:dashed;color:var(--muted)">+ Add</span></div>'}
+  function typesHtml(){
+    return '<main class="main"><div class="bar"><span>Design leadership</span><span style="display:flex;gap:8px;align-items:center"><span class="chip"><span class="dot"></span>3 unsaved changes</span><button class="btn btn-ghost btn-sm" type="button">Discard</button><button class="btn btn-primary btn-sm" type="button">Save</button>'+dockBtn()+'</span></div><div class="split"><div class="listcol" style="overflow:hidden"><div style="overflow:hidden;padding:0 16px 12px">'+
+      '<div class="grp" style="font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:4px 0 0">Role</div>'+
+      srow('Name','Shown in the sidebar and in chat','<input class="input" style="width:190px" value="Design leadership" aria-label="Name">')+
+      srow('Job titles','CeeVee matches these and close variants',chips(['Principal Designer','Design Manager','Staff Designer','Staff Product Designer'],true))+
+      srow('Level','',sel(['Senior','Staff','Principal','Manager and above'],'Staff'))+
+      '<div class="grp" style="font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:12px 0 0">Where and how much</div>'+
+      srow('Location','Within 40 miles',sel(['Denver, CO','Boulder, CO','Anywhere in the US'],'Denver, CO'))+
+      chg('Work setup','Any',sel(['Any','Onsite','Hybrid','Remote only'],'Remote only'))+
+      chg('Minimum salary','$150k',sel(['Any','$120k','$150k','$170k','$180k'],'$170k'))+
+      '<div class="grp" style="font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:12px 0 0">Where CeeVee looks</div>'+
+      srow('Company career pages','Greenhouse, Lever, Workday and others',tog(true,'Company career pages'))+
+      srow('Job boards and posting services','',tog(true,'Job boards'))+
+      '<div class="grp" style="font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:12px 0 0">What happens next</div>'+
+      srow('Search every morning','Uses the time in Settings',tog(true,'Search every morning'))+
+      srow('Automation for this type','Overrides the default level',sel(['Use default','Manual','Assisted','Review before submit'],'Use default'))+
+      '</div></div>'+(dock?dockHtml('types'):'')+'</div></main>';
+  }
+  function newTypeModal(host,onClose){
+    host.innerHTML='<div class="modal two" role="dialog" aria-modal="true" aria-label="New job type"><div class="mtabs" style="padding:16px;gap:12px"><div class="ttl" style="padding:0">New job type</div>'+
+      '<div style="color:var(--ink);font-weight:500">Tell CeeVee what you are looking for</div>'+
+      '<div class="cbox" style="border-radius:var(--r-md)"><div style="color:var(--ink);font-size:13px">Product management roles, remote only, above $170k, at health or fintech companies.</div><div class="tools"><button class="send" type="button" aria-label="Send">'+ic('up')+'</button></div></div>'+
+      '<div class="msg-a" style="font-size:12.5px"><p>Here is a first draft. The form on the right shows what I filled in. Change anything there, or keep talking and I will adjust it.</p></div>'+
+      '<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="chip sug">Start from my resume</span><span class="chip sug">Copy Design leadership</span></div></div>'+
+      '<div class="mbody"><div class="mhead"><h3>Draft</h3><button class="xbtn" type="button" aria-label="Close">'+ic('x')+'</button></div><div class="mpanel">'+
+      srow('Name','','<input class="input" style="width:170px" value="Product management" aria-label="Name">')+
+      srow('Job titles','',chips(['Product Manager','Group PM','Product Lead']))+
+      srow('Work setup','',sel(['Any','Onsite','Hybrid','Remote only'],'Remote only'))+
+      srow('Minimum salary','',sel(['Any','$150k','$170k'],'$170k'))+
+      srow('Industries','',chips(['Health','Fintech']))+
+      '<p class="note" style="margin-top:10px">You can also skip the chat and fill in the form yourself.</p></div>'+
+      '<div style="display:flex;justify-content:flex-end;gap:8px;padding:10px 20px;border-top:1px solid var(--line)"><button class="btn btn-ghost" type="button" data-cancel>Cancel</button><button class="btn btn-primary" type="button">Create job type</button></div></div></div>';
+    $('.xbtn',host).onclick=onClose; $('[data-cancel]',host).onclick=onClose;
+  }
+  var JOBS=[['Principal Product Designer','Acme Health','Design leadership','$170–195k','2d',94,1],['Design Manager, Platform','Northwind','Design leadership','$170–200k','1d',91,1],['Staff Designer','Fieldnote','Design leadership','$175–205k','today',88,0],['Head of Design','Brightpath','Design leadership','$190–230k','3d',85,0],['Group PM, Growth','Lumen','Product management','$185–220k','2d',83,0],['Senior Product Manager','Fieldnote','Product management','$170–190k','4d',80,0],['Design Director','Harbor Labs','Design leadership','$180–210k','5d',78,0],['Product Lead, Payments','Kestrel','Product management','$175–205k','6d',74,0]];
+  var dock=true;
+  function cbx(on){return '<span class="cb'+(on?' on':'')+'">'+(on?ic('check'):'')+'</span>'}
+  function dockHtml(kind){
+    var body = kind==='types' ?
+      '<div class="msg-u">Make this remote only, raise the minimum to $170k and add Staff Product Designer</div><div class="msg-a"><p>Done. I changed three fields in the form and marked them. Nothing is saved yet.</p><div style="display:flex;gap:6px"><button class="btn btn-primary btn-sm" type="button">Accept all</button><button class="btn btn-secondary btn-sm" type="button">Undo</button></div></div>' : kind==='jobs' ?
+      '<div class="msg-u">Only pay above $170k, sorted by match</div><div class="msg-a"><p>Done. 8 of 143 jobs match, best first. I added the filters above the list. Select rows and I will draft applications for them.</p></div>' :
+      '<div class="msg-u">Which applications need a follow-up?</div><div class="msg-a"><p>Two have had no reply in 10 days: Brightpath and Lumen. I marked them in the Applied column. Want me to draft short nudges?</p><div style="display:flex;gap:6px"><button class="btn btn-primary btn-sm" type="button">Draft nudges</button><button class="btn btn-ghost btn-sm" type="button">Not now</button></div></div>';
+    return '<aside class="dock"><div class="dh"><span>Ask CeeVee</span><button class="mini" type="button" data-dock aria-label="Hide chat panel">'+ic('x')+'</button></div><div class="dt">'+body+'</div><div class="cbox"><div class="ph">'+(kind==='types'?'Change this job type':'Ask about this list')+'</div><div class="tools"><span class="chip">'+(kind==='types'?'Context: Design leadership':kind==='jobs'?'Context: 8 jobs, 2 selected':'Context: 14 applications')+'</span><button class="send" type="button" aria-label="Send">'+ic('up')+'</button></div></div></aside>';
+  }
+  function dockBtn(){return '<button class="btn btn-secondary btn-sm" type="button" data-dock>'+ic('chat')+(dock?'Hide chat':'Ask CeeVee')+'</button>'}
+  function jobsHtml(){
+    var th='<div class="tr th">'+cbx(false)+'<span>Job</span><span>Company</span><span>Job type</span><span>Pay</span><span>Posted</span><span>Match</span><span></span></div>';
+    var rows=JOBS.map(function(j){return '<div class="tr'+(j[6]?' sel':'')+'">'+cbx(j[6])+'<b>'+j[0]+'</b><span>'+j[1]+'</span><span>'+j[2]+'</span><span>'+j[3]+'</span><span>'+j[4]+'</span><span class="match">'+j[5]+'</span><span class="acts"><button class="mini" type="button" aria-label="Save">'+ic('plus')+'</button><button class="mini" type="button" aria-label="Dismiss">'+ic('x')+'</button></span></div>'}).join('');
+    return '<main class="main"><div class="bar"><span>Jobs</span><span style="display:flex;gap:8px;align-items:center"><span class="note">143 jobs</span>'+dockBtn()+'</span></div><div class="split"><div class="listcol">'+
+      '<div class="tool"><span class="chip">New this week <span style="color:var(--muted)">&times;</span></span><span class="chip">Pay &ge; $170k <span style="color:var(--muted)">&times;</span></span><span class="chip" style="border-style:dashed;color:var(--muted)">+ Filter</span><span class="grow"></span>'+sel(['Best match','Newest','Pay'],'Best match')+sel(['No grouping','By job type','By company'],'No grouping')+'</div>'+
+      '<div class="bulk"><b style="font-weight:500">2 selected</b><span style="flex:1"></span><button class="btn btn-primary btn-sm" type="button">Draft applications</button><button class="btn btn-secondary btn-sm" type="button">Save</button><button class="btn btn-ghost btn-sm" type="button">Dismiss</button></div>'+
+      '<div class="tbl">'+th+rows+'</div><div class="foot"><span>Showing 8 of 143. The list loads rows as you scroll.</span><span>j and k to move &middot; x to select</span></div></div>'+(dock?dockHtml('jobs'):'')+'</div></main>';
+  }
+  function appsHtml(){
+    function c(t,co,m,f){return '<div class="bcard'+(f?' flag':'')+'"><b>'+t+'</b>'+co+' &middot; '+m+'</div>'}
+    return '<main class="main"><div class="bar"><span>Applications</span><span style="display:flex;gap:8px;align-items:center"><div class="seg"><button aria-pressed="false">Table</button><button aria-pressed="true">Board</button></div>'+dockBtn()+'</span></div><div class="split"><div class="listcol">'+
+      '<div class="tool"><span class="chip">All job types <span style="color:var(--muted)">&times;</span></span><span class="chip" style="border-style:dashed;color:var(--muted)">+ Filter</span><span class="grow"></span><span class="note">14 applications &middot; Closed ones are hidden</span></div>'+
+      '<div class="board"><div class="bcol"><h4>Saved <span>4</span></h4>'+c('Head of Design','Brightpath','saved 1d')+c('Design Director','Harbor Labs','saved 3d')+'<div class="more">+2 more</div></div>'+
+      '<div class="bcol"><h4>Applied <span>6</span></h4>'+c('Staff Designer','Fieldnote','10d, no reply',1)+c('Group PM, Growth','Lumen','11d, no reply',1)+c('Senior Designer','Kestrel','4d')+'<div class="more">+3 more</div></div>'+
+      '<div class="bcol"><h4>Interview <span>2</span></h4>'+c('Principal Designer','Acme Health','Thu 10:00')+c('Design Manager','Northwind','screen done')+'</div>'+
+      '<div class="bcol"><h4>Offer <span>0</span></h4><div class="more">Nothing here yet</div></div></div></div>'+(dock?dockHtml('apps'):'')+'</div></main>';
+  }
+  function mainHtml(){
+    if(state==='jobs') return jobsHtml();
+    if(state==='apps') return appsHtml();
+    if(state==='types') return typesHtml();
+    if(state==='home') return '<main class="main"><div class="bar"><span></span><span class="chip"><span class="dot"></span>Next search 7:00 AM</span></div><div class="homeview"><h2>What should we work on?</h2>'+composer('Ask CeeVee to find jobs, draft a letter, or update your profile')+
+      '<div class="sugs"><span class="chip sug">Find new roles this week</span><span class="chip sug">Tailor my resume to a posting</span><span class="chip sug">Draft a reply to a recruiter</span><span class="chip sug">Update my work history</span></div>'+
+      '<div class="today"><div class="c"><b>2</b><span>approvals waiting</span></div><div class="c"><b>5</b><span>new jobs since yesterday</span></div><div class="c"><b>1</b><span>recruiter reply</span></div></div></div></main>';
+    return '<main class="main"><div class="bar"><span>Product design roles, Denver</span><span class="chip">5 results</span></div><div class="thread"><div class="col">'+
+      '<div class="msg-u">Find new product design roles in Denver posted this week</div>'+
+      '<div class="msg-a"><p>I found five that fit your Design leadership job type. Three look strongest.</p>'+
+      '<div class="rl">'+
+        '<div class="rrow"><span class="l">A</span><b>Principal Product Designer</b><span class="m">Acme Health &middot; Denver</span><span>$170&ndash;195k</span><button class="btn btn-ghost btn-sm" type="button">Open</button></div>'+
+        '<div class="rrow"><span class="l">N</span><b>Design Manager, Platform</b><span class="m">Northwind &middot; 2 connections</span><span>$170&ndash;200k</span><button class="btn btn-ghost btn-sm" type="button">Open</button></div>'+
+        '<div class="rrow"><span class="l">F</span><b>Staff Designer</b><span class="m">Fieldnote &middot; Remote</span><span>$175&ndash;205k</span><button class="btn btn-ghost btn-sm" type="button">Open</button></div>'+
+        '<div class="rfoot"><span>Showing 3 of 5</span><button class="btn btn-ghost btn-sm" type="button" data-go="jobs">Show all in Jobs</button></div></div>'+
+      '<div class="appr"><div><b>Ready to apply to Acme Health</b><div class="note" style="color:var(--body)">Tailored resume and cover letter are drafted. The form is filled and waiting before Submit.</div></div><div class="acts"><button class="btn btn-primary btn-sm" type="button">Approve and submit</button><button class="btn btn-secondary btn-sm" type="button">Review drafts</button><button class="btn btn-ghost btn-sm" type="button">Skip</button></div></div></div>'+
+      '</div></div>'+composer('Reply to CeeVee')+'</main>';
+  }
+  function renderApp(){
+    var host=$('#app1'); host.innerHTML=sideHtml()+mainHtml();
+    if(newType){host.insertAdjacentHTML('beforeend','<div class="scrim" id="scr2"></div>');newTypeModal($('#scr2'),function(){newType=false;syncSeg();renderApp()});$('#scr2').addEventListener('mousedown',function(e){if(e.target.id==='scr2'){newType=false;syncSeg();renderApp()}})}
+    if(modalTab){host.insertAdjacentHTML('beforeend','<div class="scrim" id="scr"></div>');buildModal($('#scr'),modalTab,function(){modalTab=null;renderApp()});
+      $('#scr').addEventListener('mousedown',function(e){if(e.target.id==='scr'){modalTab=null;renderApp()}})}
+    $('#acct').onclick=function(){menuOpen=!menuOpen;renderApp()};
+    $$('[data-dock]',host).forEach(function(b){b.onclick=function(){dock=!dock;renderApp()}});
+    $$('[data-new]',host).forEach(function(b){b.onclick=function(){state='types';newType=true;menuOpen=false;syncSeg();renderApp()}});
+    $$('[data-go]',host).forEach(function(b){b.onclick=function(){state=b.dataset.go;newType=false;menuOpen=false;syncSeg();renderApp()}});
+    $$('[data-open]',host).forEach(function(b){b.onclick=function(){modalTab=b.dataset.open;menuOpen=false;renderApp()}});
+  }
+  function syncSeg(){$$('#homeseg button').forEach(function(x){x.setAttribute('aria-pressed',x.dataset.s===(newType?'newtype':state))})}
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(newType){newType=false;syncSeg();renderApp()}else if(modalTab){modalTab=null;renderApp()}else if(menuOpen){menuOpen=false;renderApp()}}});
+  $$('#homeseg button').forEach(function(b){b.onclick=function(){if(b.dataset.s==='newtype'){state='types';newType=true}else{state=b.dataset.s;newType=false}syncSeg();renderApp()}});
+  renderApp();
+
+  /* sign-in flow */
+  var wm='<div class="wm"><i>C</i>CeeVee</div>';
+  $('#flow').innerHTML=
+   '<div class="step"><span class="sn">1 · Welcome</span>'+wm+'<h3>Your job search, run from this computer</h3><p>CeeVee finds roles, drafts your documents and tracks replies. Your data stays here.</p>'+googleBtn('lg')+'<div class="or">or</div><button class="btn btn-secondary" type="button" style="justify-content:center;height:32px">Continue without Google</button><p class="note">You can connect Google later in Settings.</p></div>'+
+   '<div class="step"><span class="sn">2 · What Google access is for</span><h3>CeeVee asks Google for two things</h3><ul class="perm"><li>'+ic('check')+'<span>Your name and email, to set up your profile.</span></li><li>'+ic('check')+'<span>Read-only Gmail access, so it can spot recruiter replies and update your tracker.</span></li><li class="no">'+ic('x')+'<span>It never sends, deletes or changes email without your approval.</span></li></ul>'+googleBtn('lg','Continue with Google')+'<p class="note">Opens your browser. Revoke access any time from your Google account.</p></div>'+
+   '<div class="step"><span class="sn">3 · In your browser</span>'+wm+'<h3>Finish signing in with Google</h3><p>We opened your browser. Choose your account there, then return here.</p><div style="display:flex;align-items:center;gap:10px"><span class="spin"></span><span class="note">Waiting for Google…</span></div><div style="display:flex;gap:8px"><button class="btn btn-secondary btn-sm" type="button">Open browser again</button><button class="btn btn-ghost btn-sm" type="button">Cancel</button></div></div>'+
+   '<div class="step"><span class="sn">4 · Signed in</span>'+wm+'<div style="display:flex;align-items:center;gap:10px"><span class="av">H</span><div><div style="color:var(--ink);font-weight:500">Howard</div><div class="note">howard@example.com · Gmail connected</div></div></div><h3>Next, add your resume</h3><p>CeeVee builds your profile from it. LinkedIn is optional.</p><button class="btn btn-primary" type="button" style="justify-content:center;height:32px">Import resume</button><button class="btn btn-ghost" type="button" style="justify-content:center">Skip for now</button></div>';
+
+  /* tokens */
+  var SW=[['paper','--paper','Window ground'],['sidebar','--sidebar','New · sidebar, tab rail'],['surface','--surface','Cards, menus, modal'],['hover','--hover','New · row hover, user bubble'],['selected','--selected','New · current item'],['line','--line','1px rules'],
+    ['ink','--ink','Headings, primary'],['body','--body','Running text'],['muted','--muted','New · hints, metadata'],['border-control','--control','Control borders, toggle off'],['accent','--accent','Toggle on, badges, hover fill'],['accent-soft','--accent-soft','New · approval card'],
+    ['danger','--danger','Errors only'],['ok','--ok','New · ready dot']];
+  $('#sw').innerHTML=SW.map(function(s){return '<div><i style="background:var('+s[1]+')"></i><b>'+s[0]+'</b><span>'+s[2]+'</span></div>'}).join('');
+
+  /* theme showcase */
+  function mini(theme){
+    return '<div class="theme-'+theme+'"><div class="tpanel"><aside class="side" style="padding:10px 6px"><div class="wm" style="padding:2px 6px 8px"><i>C</i>CeeVee</div><button class="nav" type="button" aria-current="true">'+ic('chat')+'Chat</button><button class="nav" type="button">'+ic('layers')+'Job types</button><button class="nav" type="button">'+ic('jobs')+'Jobs<span class="badge">5</span></button><button class="nav" type="button">'+ic('inbox')+'Inbox</button></aside>'+
+      '<div class="tmain"><div class="msg-u" style="justify-self:end;font-size:12.5px">Find new roles in Denver</div><div class="rl"><div class="rrow"><span class="l">A</span><b>Principal Product Designer</b><span class="m">Acme Health</span><span>$170&ndash;195k</span></div><div class="rrow" style="border-bottom:0"><span class="l">N</span><b>Design Manager</b><span class="m">Northwind</span><span>$170&ndash;200k</span></div></div>'+
+      '<div class="appr"><div><b>Ready to apply to Acme Health</b></div><div class="acts" style="display:flex;gap:6px"><button class="btn btn-primary btn-sm" type="button">Approve</button><button class="btn btn-secondary btn-sm" type="button">Review</button></div></div>'+
+      srow('Open at login','',tog(true,'Open at login'))+googleBtn('','Sign in with Google')+'</div></div></div>';
+  }
+  $('#duo').innerHTML=mini('light')+mini('dark');
+  var TV=[['paper','#f7f3ea','#1e1d1b'],['sidebar','#ede7da','#171614'],['surface','#fffdf8','#262421'],['hover','#e8e1d2','#2d2b27'],['selected','#e2d9c6','#37342e'],['line','#d2c9b6','#34312c'],['ink','#1c1c1c','#f3eee4'],['body','#4a443c','#c9c1b2'],['muted','#7a7266','#968e80'],['border-control','#8a8278','#8a8278'],['accent','#d4a853','#d4a853'],['accent-soft','#f1e3bd','#3d3320'],['danger','#8f3b2a','#e58e80'],['ok','#3f6b4a','#8fc29b']];
+  $('#swtable').innerHTML='<tr><th style="text-align:left">Token</th><th style="text-align:left">Light</th><th style="text-align:left">Dark</th></tr>'+TV.map(function(t){return '<tr><td>'+t[0]+'</td><td><i style="background:'+t[1]+'"></i>'+t[1]+'</td><td><i style="background:'+t[2]+'"></i>'+t[2]+'</td></tr>'}).join('');
+
+  /* specimens */
+  function card(l,b){return '<div class="card"><div class="lab">'+l+'</div>'+b+'</div>'}
+  $('#specimens').innerHTML=
+   card('Button',"<div style='display:flex;gap:8px;flex-wrap:wrap'><button class='btn btn-primary' type='button'>Approve</button><button class='btn btn-secondary' type='button'>Review</button><button class='btn btn-ghost' type='button'>Skip</button><button class='btn btn-danger' type='button'>Delete</button></div>"+googleBtn('','Sign in with Google'))+
+   card('Toggle and setting row',srow('Open at login','Starts in the tray',tog(true,'Open at login'))+srow('Use graphics chip','',tog(false,'Use graphics chip')))+
+   card('Segmented and select',"<div style='display:flex;gap:10px;flex-wrap:wrap;align-items:center'><div class='seg'><button aria-pressed='true'>System</button><button aria-pressed='false'>Light</button><button aria-pressed='false'>Dark</button></div>"+sel(['Ask','Auto','Off'],'Ask')+'</div>')+
+   card('Text field',"<input class='input' placeholder='Search jobs and chats' aria-label='Search'><input class='input' value='howard@example.com' aria-label='Email'>")+
+   card('Chips and status',"<div style='display:flex;gap:8px;flex-wrap:wrap'><span class='chip'><span class='dot ok'></span>Ready</span><span class='chip'><span class='dot'></span>Next search 7:00 AM</span><span class='chip sug'>Find new roles</span></div>")+
+   card('Navigation item',"<div style='display:grid;gap:2px'><button class='nav' aria-current='true' type='button'>"+ic('chat')+"Chat</button><button class='nav' type='button'>"+ic('jobs')+"Jobs<span class='badge'>5</span></button><button class='nav' type='button'>"+ic('inbox')+"Inbox</button></div>");
+})();
+</script>
