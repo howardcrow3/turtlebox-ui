@@ -11,6 +11,9 @@
 | `.tb-empty` | What is missing and the one action that fixes it. |
 | `.tb-progress` | Determinate bar, set with `--v` from 0 to 1. |
 | `.tb-data` | Dense data table for screens, numbers right-aligned and tabular. |
+| `.tb-thread`, `.tb-msg-u`, `.tb-msg-a` | Conversation column: question as a bubble, answer as plain text. |
+| `.tb-composer`, `.tb-send` | One rounded input bar with a send button, inside a form. |
+| `.tb-sugs`, `.tb-sug` | Suggestion chips under the composer. |
 | `.tb-section` | Titled group with the group-label heading. |
 
 Golden also uses `css/charts.css` and `js/tb-charts.js` unchanged.
@@ -20,6 +23,7 @@ Golden also uses `css/charts.css` and `js/tb-charts.js` unchanged.
 - Numbers are tabular and right-aligned in tables.
 - A choice of 2 to 5 short options is a segmented control, not a row of separate buttons.
 - Screens group content in sections with a group label, not in a stack of cards. Use a card (`.cardx`) only for a self-contained tool or a headline number.
+- A question and answer screen is a thread, not a stack of cards: the bubble is the question, the answer is plain text, tools and detail sit under it.
 - Estimates and approximations get a `.tb-badge` or a `.tb-notice.warn` with words, never colour alone.
 
 ## shell.css: shell only
