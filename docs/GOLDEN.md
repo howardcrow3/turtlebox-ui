@@ -44,8 +44,9 @@ Golden's own `app.css` does three things:
 - `tb-charts.js` also draws the retirement fan chart (`TBChart.line` with a 10th to 90th percentile band) and the final-balance histogram (`TBChart.columns`).
 - Board view on Transactions: a `tb-seg` List / By category switch, then one lane per category (a bordered surface with a header, line count and total) holding compact tiles. Local to the screen, no framework classes yet.
 
+- Headed panels on the work screens use `.tb-section` (23 panels across 18 screens). Plain cards remain only in the Settings modal and for tables.
+
 ## Not yet adopted
 
 - The Sankey: the kit has no Sankey, so it stays a Svelte component styled with role tokens.
 - Board lanes as a shared `tb-board` extension, if a second screen needs it.
-- Per-screen conversion of the remaining cards to `.tb-section`.
