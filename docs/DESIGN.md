@@ -78,3 +78,11 @@ Unsloth Studio (left sidebar with New chat, model picker top-left in chat, stack
 10. Retire the old header and replaced pages
 
 Each step is a small pull request that passes tests before merge. Golden adopts the same tokens and controls after CeeVee's shell is done.
+
+## Adopted in CeeVee (steps 1 to 4, 2026-11-26)
+
+- Tokens are vendored as a copy of `css/tokens.css`, and the old role names are kept as aliases so existing pages did not need to change.
+- Account menu at the bottom left holds Settings, Send feedback and a System, Light or Dark control. The choice is stored locally and sets `data-theme`.
+- The settings modal is driven by a small tab registry (id and label) so other features add a tab without touching the shell. Other screens open a tab by id.
+- A job type is a saved search shown as one dense row with a 26 by 15px switch. Creating one uses an inline form; editing and deleting wait on backend support.
+- A button styled as an inline link is used for text that opens a dialog, so it stays keyboard accessible.
