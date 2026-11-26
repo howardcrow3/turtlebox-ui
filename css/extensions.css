@@ -47,3 +47,21 @@
 /* Section: a titled group inside a work surface, with the framework group label. */
 .tb-section{display:grid;gap:10px;margin:0 0 20px}
 .tb-section>h2{font-size:11px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+
+/* Chat: a conversation column. The question is a right-aligned bubble, the answer is plain text with its tools underneath. */
+.tb-thread{display:grid;gap:18px;max-width:720px}
+.tb-msg-u{justify-self:end;background:var(--hover);color:var(--ink);padding:8px 12px;border-radius:var(--r-lg);max-width:80%;font-size:13px}
+.tb-msg-a{display:grid;gap:10px;color:var(--ink);font-size:14px;line-height:1.55;min-width:0}
+.tb-msg-a p{margin:0}
+/* Composer: one rounded bar with the input and the send button. Put a form around it. */
+.tb-composer{display:flex;align-items:center;gap:8px;max-width:720px;background:var(--surface);border:1px solid var(--control);border-radius:var(--r-lg);padding:6px 6px 6px 14px}
+.tb-composer:focus-within{border-color:var(--ink)}
+.tb-composer input{flex:1;border:0;background:transparent;height:28px;padding:0;font-size:14px;min-width:0}
+.tb-composer input:focus-visible{outline:none}
+.tb-composer .tb-send{height:26px;border-radius:var(--r-pill);background:var(--ink);color:var(--on-ink);border:0;padding:0 14px;font:500 12.5px var(--sans);cursor:pointer}
+.tb-composer .tb-send:hover:not(:disabled){background:var(--accent);color:var(--on-accent)}
+.tb-composer .tb-send:disabled{opacity:.4;cursor:default}
+/* Suggestion chips under the composer. */
+.tb-sugs{display:flex;gap:8px;flex-wrap:wrap;max-width:720px}
+.tb-sug{height:26px;padding:0 12px;border-radius:var(--r-pill);border:1px solid var(--line);background:var(--surface);color:var(--body);font:450 12px var(--sans);cursor:pointer}
+.tb-sug:hover:not(:disabled){background:var(--hover);color:var(--ink)}
