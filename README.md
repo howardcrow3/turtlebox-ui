@@ -1,6 +1,6 @@
 # Turtlebox UI
 
-The shared UX framework for Turtlebox apps: design tokens, component styles, and the layout rules for chat-first desktop apps. CeeVee is the first app to adopt it, and Golden is the second.
+The shared UX framework for Turtlebox apps: design tokens, component styles, and the layout rules for chat-first desktop apps. CeeVee is the first app to adopt it, and Golden is the second and is on it (see `docs/GOLDEN.md`).
 
 Status: draft v0.2, first uploaded for review. The design is not final until Howard approves it.
 
@@ -17,6 +17,7 @@ Status: draft v0.2, first uploaded for review. The design is not final until How
 | `css/extensions.css` | Segmented control, field, notice, badge, empty state, progress, data table, section (see `docs/EXTENSIONS.md`) |
 | `css/components.css` | Framework-neutral styles for buttons, toggle, select, input, chip, nav, rows, modal, chat composer, result list, approval card, data table, board and chat dock |
 | `docs/CHARTS.md` | Chart types, the time model and the chart rules |
+| `docs/GOLDEN.md` | How Golden consumes the framework, what it adopted and what is left |
 | `docs/DESIGN.md` | Principles, layout patterns, density, lists, chat and forms, themes, references, adoption plan |
 | `preview/ux-plan-v0.2.html` | The live review page with all mockups. Open it in a browser |
 | `scripts/build-tokens.py` | Regenerates `css/tokens.css` |
