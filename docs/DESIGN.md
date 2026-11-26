@@ -1,6 +1,6 @@
-# Turtlebox UX framework, draft v0.1
+# Turtlebox UX framework, draft v0.2
 
-This supersedes the marketing-site design system where they conflict. The preview page (`preview/ux-plan-v0.1.html`) is the visual reference. Where this file and the preview differ, ask.
+This supersedes the marketing-site design system where they conflict. The preview page (`preview/ux-plan-v0.2.html`) is the visual reference. Where this file and the preview differ, ask.
 
 ## Principles
 
@@ -46,6 +46,10 @@ This supersedes the marketing-site design system where they conflict. The previe
 - Select with the checkbox, `x`, or shift-click. A bulk bar offers the actions for the selection. Row actions are hover icons only.
 - Click a row to open detail in a side panel. Keyboard: `j` and `k` to move, `x` to select.
 - Applications default to a board with a column per stage, top cards, and "+N more". A table view is available.
+
+## Charts
+
+See `docs/CHARTS.md`. Time-based dashboards share one time bar, and every chart has hover, a legend and a table view.
 
 ## Themes
 

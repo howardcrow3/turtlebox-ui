@@ -1,0 +1,47 @@
+/* Turtlebox charts and dashboard layout, draft v0.1. Needs tokens.css (series colors --s1..--s3, --grid, --axis) and components.css. */
+.tb-chart{position:relative;min-width:0}
+.tb-chart svg{display:block;max-width:100%}
+.tb-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--body);margin:0 0 6px}
+.tb-legend span{display:inline-flex;align-items:center;gap:6px}
+.tb-legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+.tb-legend i.line{height:2px;width:14px;border-radius:1px}
+.tb-tip{position:absolute;pointer-events:none;z-index:3;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow-pop);padding:8px 10px;font-size:12px;min-width:150px;color:var(--body)}
+.tb-tip[hidden]{display:none}
+.tb-tip-h{color:var(--muted);margin-bottom:3px;font-size:11.5px}
+.tb-tip-r{display:flex;align-items:center;gap:8px;line-height:1.75}
+.tb-tip-r b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.tb-key{width:12px;height:2px;border-radius:1px;display:inline-block}
+.tb-hbars{display:grid;gap:4px}
+.tb-hrow{display:grid;grid-template-columns:72px 1fr 108px;gap:10px;align-items:center;height:26px;font-size:12.5px}
+.tb-hname{color:var(--body)}
+.tb-htrack{height:8px;position:relative}
+.tb-hbar{display:block;height:8px;border-radius:0 4px 4px 0;background:var(--s1)}
+.tb-hval{color:var(--ink);font-weight:500;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tb-hval small{color:var(--muted);font-weight:400;font-size:11px}
+.tb-tablewrap{overflow:auto;max-height:260px}
+.tb-table{border-collapse:collapse;width:100%;font-size:12.5px}
+.tb-table th,.tb-table td{text-align:right;padding:5px 8px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.tb-table th:first-child,.tb-table td:first-child{text-align:left}
+.tb-table th{font-weight:500;font-size:11px;color:var(--muted);position:sticky;top:0;background:var(--surface)}
+.tb-table td{color:var(--ink)}
+.dash{display:grid;gap:12px;padding:14px 16px}
+.dash-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap}
+.timebar{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.timebar button:disabled{opacity:.4;cursor:default}
+.tb-range{font-weight:500;color:var(--ink);min-width:150px;text-align:center;font-variant-numeric:tabular-nums;font-size:12.5px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:10px 12px;display:grid;gap:2px;min-width:0}
+.kpi .lab{font-size:12px;color:var(--muted)}
+.kpi .val{font-size:22px;color:var(--ink);font-weight:600;letter-spacing:-.03em;line-height:1.25}
+.kpi .delta{font-size:12px;color:var(--muted)}
+.kpi .delta.up{color:var(--ok)}
+.kpi .delta.down{color:var(--danger)}
+.kpi .spark{margin-top:4px;height:30px}
+.cardx{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);padding:12px 14px;min-width:0}
+.cardhead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}
+.cardhead h4{margin:0;font-size:13px;color:var(--ink);font-weight:600}
+.cols{display:grid;grid-template-columns:3fr 2fr;gap:12px}
+.cols.even{grid-template-columns:1fr 1fr}
+@media (max-width:760px){.cols,.cols.even{grid-template-columns:1fr}}
+.hero-fig{display:flex;align-items:baseline;gap:10px;margin:0 0 6px}
+.hero-fig b{font-size:30px;color:var(--ink);letter-spacing:-.035em;font-weight:600}

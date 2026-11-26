@@ -23,6 +23,11 @@
   --ok:#3f6b4a;
   --scrim:rgba(28,24,18,.42);
   --shadow-pop:0 8px 28px rgba(28,24,18,.16),0 1px 3px rgba(28,24,18,.1);
+  --s1:#257de0;
+  --s2:#f47230;
+  --s3:#00b894;
+  --grid:#ece5d6;
+  --axis:#cfc6b3;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -44,6 +49,11 @@
   --ok:#8fc29b;
   --scrim:rgba(0,0,0,.6);
   --shadow-pop:0 8px 28px rgba(0,0,0,.5),0 1px 3px rgba(0,0,0,.4);
+  --s1:#338ced;
+  --s2:#e76624;
+  --s3:#00a888;
+  --grid:#33302b;
+  --axis:#4a463f;
   color-scheme: dark; }
 }
 :root[data-theme="dark"], .tb-dark {
@@ -65,6 +75,11 @@
   --ok:#8fc29b;
   --scrim:rgba(0,0,0,.6);
   --shadow-pop:0 8px 28px rgba(0,0,0,.5),0 1px 3px rgba(0,0,0,.4);
+  --s1:#338ced;
+  --s2:#e76624;
+  --s3:#00a888;
+  --grid:#33302b;
+  --axis:#4a463f;
   color-scheme: dark;
 }
 .tb-light {
@@ -86,6 +101,11 @@
   --ok:#3f6b4a;
   --scrim:rgba(28,24,18,.42);
   --shadow-pop:0 8px 28px rgba(28,24,18,.16),0 1px 3px rgba(28,24,18,.1);
+  --s1:#257de0;
+  --s2:#f47230;
+  --s3:#00b894;
+  --grid:#ece5d6;
+  --axis:#cfc6b3;
   color-scheme: light;
 }
 .tb-light, .tb-dark { background: var(--paper); color: var(--body); }
