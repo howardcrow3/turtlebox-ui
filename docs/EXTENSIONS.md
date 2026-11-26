@@ -14,6 +14,7 @@
 | `.tb-thread`, `.tb-msg-u`, `.tb-msg-a` | Conversation column: question as a bubble, answer as plain text. |
 | `.tb-composer`, `.tb-send` | One rounded input bar with a send button, inside a form. |
 | `.tb-sugs`, `.tb-sug` | Suggestion chips under the composer. |
+| `.tb-scrim`, `.tb-modal`, `.tb-mtabs`, `.tb-mbody`, `.tb-mhead`, `.tb-mpanel`, `.tb-xbtn` | Settings modal: tabs down the left (`role="tablist"`, `aria-selected`), one panel on the right. Opens from the account button at the bottom of the sidebar. |
 | `.tb-section` | Titled group with the group-label heading. |
 
 Golden also uses `css/charts.css` and `js/tb-charts.js` unchanged.
