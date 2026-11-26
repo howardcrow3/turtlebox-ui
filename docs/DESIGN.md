@@ -24,6 +24,10 @@ This supersedes the marketing-site design system where they conflict. The previe
 | Nav item | 28px, sub-item 26px |
 | Table row | 30px, header 26px |
 
+## Job types (CeeVee)
+
+A job type is a saved search with its own rules: role (titles, level, function, industry), where and how much (location, remote, minimum salary, words to leave out), where to look (career pages, boards, alert emails, watched companies) and what happens next (daily search, automation level, alerts). Job types sit in the sidebar under Chat, with counts of new matches. Jobs and applications are tracked by job type and by company. Search criteria are not in the settings modal.
+
 ## Layout
 
 - **Three panes** for ongoing work: sidebar, work surface (list, form or detail), chat. The chat pane knows what is open: filters, the open object, the selected rows. It can be hidden.
@@ -46,6 +50,7 @@ This supersedes the marketing-site design system where they conflict. The previe
 - Select with the checkbox, `x`, or shift-click. A bulk bar offers the actions for the selection. Row actions are hover icons only.
 - Click a row to open detail in a side panel. Keyboard: `j` and `k` to move, `x` to select.
 - Applications default to a board with a column per stage, top cards, and "+N more". A table view is available.
+- Controls are compact: 26px buttons, 22px inside rows. Row actions are icons on hover.
 
 ## Charts
 
@@ -57,7 +62,7 @@ Tokens are in `tokens/tokens.json`. Default follows the system. `data-theme` for
 
 ## References
 
-Unsloth Studio (left sidebar with New chat, model picker top-left in chat, stacked form sections with collapsible groups and an action card, full-page progress view with a stop dialog) and the Claude apps (session sidebar with filters and sections, side chat in its own pane, panels beside chat, detail-level toggle, shortcut sheet). The public docs do not describe spacing, type sizes or where settings live, so those come from the product owner's direction.
+Unsloth Studio (left sidebar with New chat, model picker top-left in chat, stacked form sections with collapsible groups and an action card, full-page progress view with a stop dialog) and the Claude apps (session sidebar with filters and sections, side chat in its own pane, panels beside chat, detail-level toggle, shortcut sheet). Boldin (a competitor to Golden) shows one place for all charts, a Chance of Success headline number, up to 10 saved what-if scenarios compared side by side, and optimistic, average and pessimistic assumption sets. The public docs do not describe spacing, type sizes or where settings live, so those come from the product owner's direction.
 
 ## Adoption plan (CeeVee first)
 

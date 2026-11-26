@@ -1,0 +1,12 @@
+# Changelog
+
+## 0.2.0 (draft)
+- Chart kit (`js/tb-charts.js`), chart tokens and `css/charts.css`, `docs/CHARTS.md`
+- Compact density: 26px buttons, 30px table rows
+- Lists, three-pane layout and the two-column modal documented
+- Job types added to the CeeVee navigation
+- Light and dark themes shown side by side; light border darkened
+- Boldin and Unsloth and Claude references added
+
+## 0.1.0 (draft)
+- First upload: tokens, base and component CSS, design rules, review preview
