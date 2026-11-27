@@ -86,3 +86,12 @@ Each step is a small pull request that passes tests before merge. Golden adopts 
 - The settings modal is driven by a small tab registry (id and label) so other features add a tab without touching the shell. Other screens open a tab by id.
 - A job type is a saved search shown as one dense row with a 26 by 15px switch. Creating one uses an inline form; editing and deleting wait on backend support.
 - A button styled as an inline link is used for text that opens a dialog, so it stays keyboard accessible.
+
+## Adopted in CeeVee (steps 5 to 9, 2026-11-27)
+
+- Jobs is one dense table (30px rows) with a status segment and a text filter. Opening a row shows a 300px detail panel on the right; the whole row is the target and it is keyboard operable.
+- Applications is a board with at most five cards per column and a "+N more" control, plus a Table view. Status changes use a select on each card; drag and drop is not built yet. Items waiting for approval sit in a strip above the board.
+- Sign in with Google is one prominent button with clear states. It appears in setup and under Settings, Accounts, and is optional.
+- Chat is the home screen: a centered thread, suggestion chips and one composer. The same chat component opens as a 320px pane beside Jobs and Applications ("Ask CeeVee"), and it is told what is open so "this job" has a meaning. The pane state is remembered per viewer.
+- Chat answers only for now. Acting from chat uses the agent harness: reversible changes run, anything riskier becomes an approval.
+
