@@ -8,7 +8,7 @@ Apps with many existing screens (Golden) load shell.css instead of components.cs
 import re, pathlib
 root = pathlib.Path(__file__).resolve().parent.parent
 src = (root / "css/components.css").read_text()
-KEEP = (".side", ".wm", ".nav", ".recent", ".acct", ".av", ".pop")
+KEEP = (".side", ".wm", ".nav", ".recent", ".acct", ".av", ".pop", ".tb-shell", ".tb-main")
 out = ["/* Generated from components.css by scripts/build-shell.py. Do not edit by hand. App shell only. */"]
 for line in src.splitlines():
     s = line.strip()

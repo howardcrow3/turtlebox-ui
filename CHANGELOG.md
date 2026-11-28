@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.5.0 (draft)
+- Account pill fix for every app: pinned bottom left at any window size (`.tb-shell`, `.tb-main`, `.side .scroll`, `.side .foot`), a menu that lists all settings categories at once, and the trial or license countdown in the pill and its menu instead of a banner at the top of the page. Rules in `docs/DESIGN.md`, section Account pill and menu.
+
 ## 0.4.0 (draft)
 - Web layer for all websites (`css/web.css`, `docs/WEB.md`): the app tokens and controls at website scale, light mode only.
 - `css/tokens-light.css` and `web` tokens (spacing, control heights, measure) in `tokens.json`.
