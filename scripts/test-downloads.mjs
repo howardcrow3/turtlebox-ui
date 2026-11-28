@@ -1,0 +1,43 @@
+// Run: node scripts/test-downloads.mjs
+import assert from 'node:assert/strict';
+import { createDownloads, formatBytes, formatSpeed, formatEta, percent, statusLine, matches } from '../js/tb-downloads.js';
+
+assert.equal(formatBytes(31_750_000_000), '31.75 GB');
+assert.equal(formatBytes(63_390_000_000), '63.39 GB');
+assert.equal(formatBytes(800_000_000), '800 MB');
+assert.equal(formatBytes(1_500_000_000), '1.5 GB');
+assert.equal(formatSpeed(2_000_000), '2.00 MB/s');
+assert.equal(formatEta(15_840), '4 hrs 24 mins left');
+assert.equal(formatEta(30), 'less than a minute left');
+assert.equal(formatEta(3600), '1 hr left');
+assert.equal(formatEta(120), '2 mins left');
+assert.equal(percent(50, 100), 50);
+assert.equal(percent(5, 0), 0);
+assert.equal(percent(500, 100), 100);
+
+let t = 0;
+const dl = createDownloads({ now: () => t });
+let seen = 0; dl.subscribe(() => seen++);
+dl.update({ id: 'a', name: 'Model A', total: 1000e6, done: 0, state: 'running' });
+t = 1000; dl.update({ id: 'a', done: 2e6 });
+assert.equal(Math.round(dl.get('a').speed), 2e6);
+assert.equal(dl.activeCount(), 1);
+assert.match(statusLine(dl.get('a')), /2 MB of 1\.00 GB|2 MB of 1 GB/);
+assert.match(statusLine(dl.get('a')), /2\.00 MB\/s/);
+dl.update({ id: 'a', state: 'paused' });
+assert.equal(dl.get('a').speed, 0);
+assert.equal(dl.activeCount(), 0);
+assert.equal(dl.groups().ongoing.length, 1, 'paused stays ongoing');
+dl.update({ id: 'b', name: 'Update', total: 10, done: 10, state: 'done' });
+dl.update({ id: 'c', name: 'Bad one', total: 10, done: 1, state: 'failed', error: 'disk full' });
+assert.equal(dl.groups().completed.length, 2);
+assert.equal(statusLine(dl.get('c')), 'Failed • disk full');
+assert.equal(dl.groups('model').ongoing.length, 1);
+assert.equal(dl.groups('model').completed.length, 0);
+assert.ok(matches({ name: 'openai/gpt-oss-120b' }, 'GPT'));
+dl.clearCompleted();
+assert.equal(dl.items().length, 1);
+dl.update({ id: 'a', state: 'running' });
+assert.equal(dl.get('a').finishedAt, 0);
+assert.ok(seen > 3);
+console.log('tb-downloads: ok');

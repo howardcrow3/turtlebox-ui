@@ -16,6 +16,7 @@ Status: draft v0.2, first uploaded for review. The design is not final until How
 | `css/base.css` | Inter-only base type, focus ring, reduced motion |
 | `css/charts.css` | Chart chrome, tooltip, tables, stat tiles, time bar and dashboard cards |
 | `js/tb-charts.js` | Dependency-free chart kit: columns, lines, bands, bars, sparklines, time window overview, table view |
+| `css/downloads.css`, `js/tb-downloads.js` | Downloads panel: toolbar button with count badge, popover with filter, Ongoing and Completed, progress rows (see `docs/DOWNLOADS.md`) |
 | `css/shell.css` | Generated: app shell only, for apps whose screens already use short class names |
 | `css/extensions.css` | Segmented control, field, notice, badge, empty state, progress, data table, section (see `docs/EXTENSIONS.md`) |
 | `css/components.css` | Framework-neutral styles for buttons, toggle, select, input, chip, nav, rows, modal, chat composer, result list, approval card, data table, board and chat dock |
