@@ -124,7 +124,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,[t
 .av{width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-weight:600;font-size:12px;flex:none}
 .acct .n{font-weight:500;font-size:13px;line-height:1.2}
 .acct .s{font-size:11px;color:var(--muted);line-height:1.2}
-.side .foot{flex:none;position:relative;padding-top:6px;margin-top:2px;border-top:1px solid var(--line)}
+.side .acct-foot{flex:none;position:relative;padding-top:6px;margin-top:2px;border-top:1px solid var(--line)}
 .pop{position:absolute;left:0;right:0;bottom:calc(100% + 6px);min-width:232px;max-height:calc(100vh - 80px);overflow-y:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow-pop);padding:6px;z-index:5}
 .pop .lic{margin:2px 0 4px;padding:8px 10px;border:1px solid var(--accent);background:var(--accent-soft);border-radius:var(--r-sm);display:grid;gap:6px}
 .pop .lic .t{font-weight:600;font-size:12px;color:var(--ink)}
@@ -701,7 +701,7 @@ ol,ul{margin:0;padding-left:18px;display:grid;gap:6px;max-width:72ch}
         if(n[0]==='types')h+=JTYPES.map(function(t,i){return '<button class="nav sub" type="button" data-go="types" style="padding-left:34px;height:26px;font-size:12.5px" '+(state==='types'&&i===0?'aria-current="true"':'')+'><span style="flex:1;overflow:hidden;text-overflow:ellipsis">'+t[0]+'</span><span class="note">'+t[1]+'</span></button>'}).join('')+'<button class="nav sub" type="button" data-new style="padding-left:34px;height:26px;font-size:12.5px;color:var(--muted)">+ New job type</button>';
         return h}).join('')+
       '<div class="lbl">Recent</div><div class="grow"><div class="recent">Product design roles, Denver</div><div class="recent">Tighten the Acme cover letter</div><div class="recent">Why was I rejected by Northwind?</div><div class="recent">Update my work history</div></div>'+
-      '<div class="foot"><button class="acct" id="acct" type="button" aria-haspopup="menu" aria-expanded="'+menuOpen+'"><span class="av">H</span><span style="flex:1;min-width:0"><div class="n">Howard</div><div class="s">Trial · 9 days left</div></span>'+ic('chev')+'</button>'+
+      '<div class="acct-foot"><button class="acct" id="acct" type="button" aria-haspopup="menu" aria-expanded="'+menuOpen+'"><span class="av">H</span><span style="flex:1;min-width:0"><div class="n">Howard</div><div class="s">Trial · 9 days left</div></span>'+ic('chev')+'</button>'+
       (menuOpen?'<div class="pop" role="menu"><div class="who">howard@example.com</div><div class="lic"><span class="t">Free trial &middot; 9 days left</span><span class="d">Everything is unlocked.</span><button class="btn btn-primary btn-sm" type="button">Buy CeeVee</button></div><div class="grp">Settings</div>'+
         TABS.map(function(m){return '<button class="nav" role="menuitem" data-open="'+m[0]+'" type="button">'+ic(m[2])+m[1]+'</button>'}).join('')+
         '<hr><button class="nav" type="button">'+ic('help')+'Help</button><button class="nav" type="button">'+ic('out')+'Sign out</button></div>':'')+'</div></aside>';

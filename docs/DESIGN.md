@@ -68,12 +68,12 @@ Unsloth Studio (left sidebar with New chat, model picker top-left in chat, stack
 
 The pill is the one place for who you are, your license and every setting. These rules apply to every Turtlebox app.
 
-1. **Pinned.** The pill is always at the bottom left of the window, at every window size, and never needs scrolling to reach. The shell is exactly the window height (`.tb-shell`, `height:100vh`, `overflow:hidden`). Only the page area (`.tb-main`) and the middle of the sidebar (`.side .scroll`) scroll. The pill lives in `.side .foot`, outside the scrolling part.
+1. **Pinned.** The pill is always at the bottom left of the window, at every window size, and never needs scrolling to reach. The shell is exactly the window height (`.tb-shell`, `height:100vh`, `overflow:hidden`). Only the page area (`.tb-main`) and the middle of the sidebar (`.side .scroll`) scroll. The pill lives in `.side .acct-foot`, outside the scrolling part.
 2. **Shows the license.** The pill's second line is the trial or license status: "Trial · 12 days left", "Trial ended · read-only" or "Licensed". There is no trial or license banner at the top of the page.
 3. **One open shows everything.** The menu opens upward from the pill and lists, in order: who is signed in (or a Sign in row), the license block (status, a Buy button during the trial and after it, and "Enter a key"), every settings category as its own row that opens the settings modal on that tab, Send feedback and Help, and the System, Light or Dark control. It caps at the window height minus 80px and scrolls inside itself only on very short windows.
 4. **Per-app categories.** Each app lists its own settings tabs from the same registry that drives its settings modal, so a new tab shows up in the menu without extra work.
 
-Classes: `.tb-shell`, `.tb-main`, `.side .scroll`, `.side .foot`, `.acct` (with `.av`, `.n`, `.s`, `.s.soon`, `.s.ended`, `.chev`), `.pop` (with `.who`, `.grp`, `.lic`, `.nav`, `hr`). See `css/components.css`.
+Classes: `.tb-shell`, `.tb-main`, `.side .scroll`, `.side .acct-foot`, `.acct` (with `.av`, `.n`, `.s`, `.s.soon`, `.s.ended`, `.chev`), `.pop` (with `.who`, `.grp`, `.lic`, `.nav`, `hr`). See `css/components.css`.
 
 ## Adoption plan (CeeVee first)
 
