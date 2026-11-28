@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 (draft)
+- Web layer for all websites (`css/web.css`, `docs/WEB.md`): the app tokens and controls at website scale, light mode only.
+- `css/tokens-light.css` and `web` tokens (spacing, control heights, measure) in `tokens.json`.
+- Inter 400, 500 and 600 in `fonts/`, and `dist/web-light.css` built by `scripts/build-web.py`.
+- Adopted by highturtle.com and turtlebox.studio.
+
 ## 0.3.0 (draft)
 - CeeVee adopted steps 5 to 9 (Jobs list and detail, Applications board, Sign in with Google, chat home, chat pane). Notes are in `docs/DESIGN.md`.
 - `docs/GOLDEN.md`: how Golden consumes the framework.
