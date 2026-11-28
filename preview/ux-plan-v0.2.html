@@ -124,7 +124,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,[t
 .av{width:28px;height:28px;border-radius:50%;background:var(--accent);color:var(--on-accent);display:grid;place-items:center;font-weight:600;font-size:12px;flex:none}
 .acct .n{font-weight:500;font-size:13px;line-height:1.2}
 .acct .s{font-size:11px;color:var(--muted);line-height:1.2}
-.pop{position:absolute;left:8px;bottom:60px;width:216px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow-pop);padding:6px;z-index:5}
+.side .foot{flex:none;position:relative;padding-top:6px;margin-top:2px;border-top:1px solid var(--line)}
+.pop{position:absolute;left:0;right:0;bottom:calc(100% + 6px);min-width:232px;max-height:calc(100vh - 80px);overflow-y:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow-pop);padding:6px;z-index:5}
+.pop .lic{margin:2px 0 4px;padding:8px 10px;border:1px solid var(--accent);background:var(--accent-soft);border-radius:var(--r-sm);display:grid;gap:6px}
+.pop .lic .t{font-weight:600;font-size:12px;color:var(--ink)}
+.pop .lic .d{font-size:11.5px;color:var(--body)}
+.pop .grp{font-size:11px;color:var(--muted);font-weight:500;padding:8px 8px 2px}
 .pop .who{padding:6px 8px 8px;font-size:12px;color:var(--muted);border-bottom:1px solid var(--line);margin-bottom:4px}
 .pop .nav{height:26px}
 .pop hr{border:0;border-top:1px solid var(--line);margin:4px 0}
@@ -352,7 +357,7 @@ ol,ul{margin:0;padding-left:18px;display:grid;gap:6px;max-width:72ch}
   <div class="grid2">
     <div class="card"><h3>Home screen</h3><p class="note" style="max-width:none">Greeting, composer, four starter prompts and three live counts for today. The counts replace the dashboard page the plan had earlier. They are shortcuts, not a second home.</p></div>
     <div class="card"><h3>Job types</h3><p class="note" style="max-width:none">Each job type is a saved set of search criteria. The sidebar lists them under the Job types item with a count of new matches. Pick one to edit its criteria. The third view above shows the editor.</p></div>
-    <div class="card"><h3>Account menu, bottom left</h3><p class="note" style="max-width:none">Shows name, plan state (trial days left or Licensed) and opens a short menu. Each item deep-links to a tab in the settings modal, so the menu is quick access, not a second settings page.</p></div>
+    <div class="card"><h3>Account pill and menu, bottom left</h3><p class="note" style="max-width:none">Pinned to the bottom left of the window at every size, never scrolled out of reach. Its second line is the trial or license status, so the countdown lives here and not in a banner at the top of the page. Opening it shows everything at once: the license block (with Buy), every settings category, feedback, help and the theme. Each category opens the settings modal on that tab. Added 2026-11-28; rules are in the turtlebox-ui docs.</p></div>
   </div>
 </section>
 
@@ -696,10 +701,10 @@ ol,ul{margin:0;padding-left:18px;display:grid;gap:6px;max-width:72ch}
         if(n[0]==='types')h+=JTYPES.map(function(t,i){return '<button class="nav sub" type="button" data-go="types" style="padding-left:34px;height:26px;font-size:12.5px" '+(state==='types'&&i===0?'aria-current="true"':'')+'><span style="flex:1;overflow:hidden;text-overflow:ellipsis">'+t[0]+'</span><span class="note">'+t[1]+'</span></button>'}).join('')+'<button class="nav sub" type="button" data-new style="padding-left:34px;height:26px;font-size:12.5px;color:var(--muted)">+ New job type</button>';
         return h}).join('')+
       '<div class="lbl">Recent</div><div class="grow"><div class="recent">Product design roles, Denver</div><div class="recent">Tighten the Acme cover letter</div><div class="recent">Why was I rejected by Northwind?</div><div class="recent">Update my work history</div></div>'+
-      '<button class="acct" id="acct" type="button" aria-haspopup="menu" aria-expanded="'+menuOpen+'"><span class="av">H</span><span style="flex:1;min-width:0"><div class="n">Howard</div><div class="s">Trial · 9 days left</div></span>'+ic('chev')+'</button>'+
-      (menuOpen?'<div class="pop" role="menu"><div class="who">howard@example.com</div>'+
-        [['general','Settings','gear'],['profile','Profile and resume','user'],['automation','Automation','shield'],['models','Models','cpu'],['accounts','Accounts','link'],['license','License and updates','key']].map(function(m){return '<button class="nav" role="menuitem" data-open="'+m[0]+'" type="button">'+ic(m[2])+m[1]+'</button>'}).join('')+
-        '<hr><button class="nav" type="button">'+ic('help')+'Help</button><button class="nav" type="button">'+ic('out')+'Sign out</button></div>':'')+'</aside>';
+      '<div class="foot"><button class="acct" id="acct" type="button" aria-haspopup="menu" aria-expanded="'+menuOpen+'"><span class="av">H</span><span style="flex:1;min-width:0"><div class="n">Howard</div><div class="s">Trial · 9 days left</div></span>'+ic('chev')+'</button>'+
+      (menuOpen?'<div class="pop" role="menu"><div class="who">howard@example.com</div><div class="lic"><span class="t">Free trial &middot; 9 days left</span><span class="d">Everything is unlocked.</span><button class="btn btn-primary btn-sm" type="button">Buy CeeVee</button></div><div class="grp">Settings</div>'+
+        TABS.map(function(m){return '<button class="nav" role="menuitem" data-open="'+m[0]+'" type="button">'+ic(m[2])+m[1]+'</button>'}).join('')+
+        '<hr><button class="nav" type="button">'+ic('help')+'Help</button><button class="nav" type="button">'+ic('out')+'Sign out</button></div>':'')+'</div></aside>';
   }
   function composer(ph){return '<div class="composer"><div class="cbox"><div class="ph">'+ph+'</div><div class="tools"><button class="iconbtn" type="button" aria-label="Attach">'+ic('clip')+'</button><span class="chip"><span class="dot ok"></span>Qwen3 8B · on this computer</span><button class="send" type="button" aria-label="Send">'+ic('up')+'</button></div></div></div>'}
   function chg(t,was,ctl){return '<div class="row" style="background:var(--accent-soft);margin:0 -8px;padding-left:8px;padding-right:8px;border-radius:var(--r-sm)"><div><div class="t"><span class="dot" style="margin-right:6px"></span>'+t+'</div><div class="d">Changed in chat &middot; was '+was+'</div></div>'+ctl+'</div>'}
