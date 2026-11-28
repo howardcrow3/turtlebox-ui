@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.6.0 (draft)
+- Downloads panel for every long-running download: `css/downloads.css`, `js/tb-downloads.js` (state, speed, time left, wording) and `docs/DOWNLOADS.md`. Toolbar button with a count badge while downloads run, popover with filter, Ongoing and Completed, and per-item progress, size, speed, time left, pause and cancel. Inline card variant shares the same state.
+
 ## 0.5.0 (draft)
 - Account pill fix for every app: pinned bottom left at any window size (`.tb-shell`, `.tb-main`, `.side .scroll`, `.side .foot`), a menu that lists all settings categories at once, and the trial or license countdown in the pill and its menu instead of a banner at the top of the page. Rules in `docs/DESIGN.md`, section Account pill and menu.
 

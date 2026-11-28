@@ -106,3 +106,7 @@ Each step is a small pull request that passes tests before merge. Golden adopts 
 - Chat is the home screen: a centered thread, suggestion chips and one composer. The same chat component opens as a 320px pane beside Jobs and Applications ("Ask CeeVee"), and it is told what is open so "this job" has a meaning. The pane state is remembered per viewer.
 - Chat answers only for now. Acting from chat uses the agent harness: reversible changes run, anything riskier becomes an approval.
 
+
+## Downloads (v0.6)
+
+Long-running downloads use the Downloads panel: a toolbar button with a count badge while something runs, and a popover with a filter, Ongoing and Completed groups, and rows with progress, size, speed, time left, pause and cancel. One shared state feeds the popover and any inline card. Full rules in `docs/DOWNLOADS.md`.
